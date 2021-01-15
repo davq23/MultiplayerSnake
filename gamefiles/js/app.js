@@ -28,7 +28,7 @@ const players = new Map();
 document.onreadystatechange = function (event) {
     if (this.readyState === 'complete') {
         try {
-            const ws = new WebSocket(`wss://localhost:8080/game?access_token=${localStorage.getItem("access_token")}`);
+            const ws = new WebSocket(`wss:https://rocky-hamlet-16573.herokuapp.com/game`);
 
             const playerControl1 = new PlayerControl(control);
             const playerScores = new Scores(scores);
