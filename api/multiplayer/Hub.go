@@ -98,7 +98,7 @@ func (h *Hub) Run() {
 
 	h.logger.LogChan <- "Starting hub " + h.Name
 
-	tickerDead := time.NewTicker(time.Duration(5 * time.Minute))
+	tickerDead := time.NewTicker(time.Duration(2 * time.Minute))
 
 	for {
 		select {
@@ -146,7 +146,7 @@ func (h *Hub) Run() {
 			h.PlayerNum = int64(len(h.players))
 
 			tickerDead.Stop()
-			tickerDead = time.NewTicker(time.Duration(5 * time.Minute))
+			tickerDead = time.NewTicker(time.Duration(2 * time.Minute))
 			h.lock.Unlock()
 
 			h.broadcast(message)
@@ -167,7 +167,7 @@ func (h *Hub) Run() {
 
 			h.PlayerNum = int64(len(h.players))
 			tickerDead.Stop()
-			tickerDead = time.NewTicker(time.Duration(5 * time.Minute))
+			tickerDead = time.NewTicker(time.Duration(2 * time.Minute))
 
 			h.lock.Unlock()
 
