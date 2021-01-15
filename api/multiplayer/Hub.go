@@ -108,9 +108,7 @@ func (h *Hub) Run() {
 		case msg := <-h.Tracking:
 			msg.Type = models.MessageMove
 
-			if framecount%6 == 0 {
-				msg.Player.Move()
-			}
+			msg.Player.Move()
 
 			for client := range h.clients {
 				h.checkCollision(client, &msg)
