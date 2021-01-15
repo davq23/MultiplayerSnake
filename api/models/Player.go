@@ -39,7 +39,6 @@ func NewPlayer(name string, head Position, direction Direction) (p *Player) {
 
 // Move controls player movement
 func (p *Player) Move() {
-
 	for i := len(p.Positions) - 1; i > 0; i-- {
 		p.Positions[i].X = p.Positions[i-1].X
 		p.Positions[i].Y = p.Positions[i-1].Y

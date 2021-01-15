@@ -3,6 +3,7 @@ package multiplayer
 import (
 	"davidmultiplayersnake/api/models"
 	"davidmultiplayersnake/utils"
+	"math"
 	"math/rand"
 	"sync"
 	"time"
@@ -96,6 +97,8 @@ func (h *Hub) Run() {
 		h.manager.End <- h
 	}()
 
+	var framecount int64
+
 	h.logger.LogChan <- "Starting hub " + h.Name
 
 	tickerDead := time.NewTicker(time.Duration(2 * time.Minute))
@@ -104,6 +107,10 @@ func (h *Hub) Run() {
 		select {
 		case msg := <-h.Tracking:
 			msg.Type = models.MessageMove
+
+			if framecount%8 == 0 {
+				msg.Player.Move()
+			}
 
 			for client := range h.clients {
 				h.checkCollision(client, &msg)
@@ -118,6 +125,8 @@ func (h *Hub) Run() {
 					}
 				}
 			}
+
+			framecount = (framecount + 1) % math.MaxInt64
 		case c := <-h.Register:
 			rand.Seed(time.Now().Unix())
 
