@@ -118,6 +118,8 @@ document.onreadystatechange = function (event) {
 
             playerControl1.render();
 
+            let frames = 0;
+
             function main() {
                 ctx.fillStyle = 'black';
 
@@ -125,9 +127,13 @@ document.onreadystatechange = function (event) {
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 players.forEach(function (value, key, map) {
-                    value.render()
+                    if (frames % 6) {
+                        value.render()
+                    }
                 })
 
+                frames++
+                frames %= Number.MAX_SAFE_INTEGER
                 requestAnimationFrame(main);
             }
 
