@@ -37,7 +37,7 @@ func Run() {
 
 	// HTTP Server
 	s := &http.Server{
-		Addr:         ":8080",
+		Addr:         ":" + os.Getenv("PORT"),
 		ReadTimeout:  time.Duration(3 * time.Second),
 		WriteTimeout: time.Duration(2 * time.Second),
 		Handler:      mux,
