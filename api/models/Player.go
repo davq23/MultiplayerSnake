@@ -4,7 +4,7 @@ import (
 	"davidmultiplayersnake/api/config"
 )
 
-const playerSpeed = 2
+const playerSpeed = 20
 const playerRadius = 4
 const minPlayerPositions = 4
 
@@ -46,13 +46,13 @@ func (p *Player) Move() {
 
 	switch p.Direction {
 	case DirectionDown:
-		p.Positions[0].Y += playerSpeed*playerRadius + playerRadius*5
+		p.Positions[0].Y += playerSpeed
 	case DirectionLeft:
-		p.Positions[0].X -= playerSpeed*playerRadius + playerRadius*5
+		p.Positions[0].X -= playerSpeed
 	case DirectionUp:
-		p.Positions[0].Y -= playerSpeed*playerRadius + playerRadius*5
+		p.Positions[0].Y -= playerSpeed
 	case DirectionRight:
-		p.Positions[0].X += playerSpeed*playerRadius + playerRadius*5
+		p.Positions[0].X += playerSpeed
 	}
 
 	if p.Positions[0].X > config.PlayfieldWidth {

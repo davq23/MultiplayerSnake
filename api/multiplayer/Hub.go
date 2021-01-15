@@ -108,7 +108,7 @@ func (h *Hub) Run() {
 		case msg := <-h.Tracking:
 			msg.Type = models.MessageMove
 
-			if framecount%8 == 0 {
+			if framecount%6 == 0 {
 				msg.Player.Move()
 			}
 
