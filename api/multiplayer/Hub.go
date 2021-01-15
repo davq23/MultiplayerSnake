@@ -145,7 +145,8 @@ func (h *Hub) Run() {
 
 			h.PlayerNum = int64(len(h.players))
 
-			tickerDead.Reset(time.Duration(1 * time.Minute))
+			tickerDead.Stop()
+			tickerDead = time.NewTicker(time.Duration(5 * time.Minute))
 			h.lock.Unlock()
 
 			h.broadcast(message)
@@ -165,7 +166,8 @@ func (h *Hub) Run() {
 			message.Type = models.MessageUnregister
 
 			h.PlayerNum = int64(len(h.players))
-			tickerDead.Reset(time.Duration(1 * time.Minute))
+			tickerDead.Stop()
+			tickerDead = time.NewTicker(time.Duration(5 * time.Minute))
 
 			h.lock.Unlock()
 
