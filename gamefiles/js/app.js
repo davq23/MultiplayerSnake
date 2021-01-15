@@ -118,8 +118,6 @@ document.onreadystatechange = function (event) {
 
             playerControl1.render();
 
-            let frames = 0;
-
             function main() {
                 ctx.fillStyle = 'black';
 
