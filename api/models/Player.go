@@ -4,7 +4,7 @@ import (
 	"davidmultiplayersnake/api/config"
 )
 
-const playerSpeed = 5
+const playerSpeed = 20
 const playerRadius = 4
 const minPlayerPositions = 4
 
