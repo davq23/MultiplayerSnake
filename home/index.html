@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Snake</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="card">
+        <h2>Multiplayer Snake</h2>
+        <h3>Player Info.</h3>
+        <label>Player name</label><br>
+        <label id="join-hub-err" class="error"></label>
+        <input type="text" id="username" placeholder="Player name">
+        <h3>Create Hub</h3>
+        <label id="create-hub-err" class="error"></label>
+        <input type="text" id="hubname" placeholder="Hub name">
+        <button id="create-hub">Create Hub</button>
+
+        <h3>Join Hub</h3>
+        <div id="hubs">
+            <button id="hub-refresh">Refresh</button>
+            <ul id="hub-list">
+
+            </ul>
+        </div>
+    </div>
+    
+    
+    
+
+    <script src="js/app.js"></script>
+
+
+</body>
+</html>

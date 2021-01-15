@@ -1,0 +1,46 @@
+:root {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    background-color: rgb(24, 24, 24);
+
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+#hub-list {
+    list-style: none;
+}
+.card {
+    background-color: white;
+    color: rgb(2, 2, 55);
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    max-width: 50vw;
+    min-width: 30vw;
+}
+
+.error {
+    color: red;
+}
+
+.hub {
+    padding: 0.5rem 1rem;
+
+    background-color: rgb(15, 127, 131);
+
+    color: rgba(255, 255, 255, 0.775);
+
+
+} 
+
+.hub:active {
+    background-color: rgb(19, 164, 169);
+}
