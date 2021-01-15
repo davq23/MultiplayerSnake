@@ -28,8 +28,8 @@ func Run() {
 	mux.HandleFunc("/game", middlewares.MethodMiddleware(middlewares.JWTMiddleware(uc.StartGame, true), http.MethodGet))
 
 	// Frontend routes
-	fsGame := http.StripPrefix("/play/", http.FileServer(http.Dir("../gamefiles")))
-	fsHome := http.FileServer(http.Dir("../home"))
+	fsGame := http.StripPrefix("/play/", http.FileServer(http.Dir("./gamefiles")))
+	fsHome := http.FileServer(http.Dir("./home"))
 
 	mux.HandleFunc("/play/", middlewares.MethodMiddleware(middlewares.JWTMiddleware(fsGame.ServeHTTP, true), http.MethodGet))
 
