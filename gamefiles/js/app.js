@@ -125,9 +125,7 @@ document.onreadystatechange = function (event) {
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 players.forEach(function (value, key, map) {
-                    if (frames % 6) {
-                        value.render()
-                    }
+                    value.render()
                 })
 
                 frames++
