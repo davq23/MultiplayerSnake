@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	maxMessages int = 100
+	maxMessages int = 200
 )
 
 // Client multiplayer game client
