@@ -4,7 +4,7 @@ import (
 	"davidmultiplayersnake/api/config"
 )
 
-const playerSpeed = 20
+const playerSpeed = 40
 const playerRadius = 4
 
 // PlayerDiameter diameter of each player segment
