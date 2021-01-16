@@ -29,6 +29,8 @@ export class Player {
     }
 
     render() {
+        
+
         for (let i = 0; i < this.positions.length; i++) {
             this.ctx.beginPath();
             this.ctx.arc(this.positions[i].x, this.positions[i].y, playerRadius, 0, 2 * Math.PI);

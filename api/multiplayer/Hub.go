@@ -52,11 +52,6 @@ func (h *Hub) checkCollision(client *Client, msg *models.Message) {
 				client.Player.Positions = append(client.Player.Positions, lost...)
 				msg.Player.Positions = msg.Player.Positions[:pos]
 				client.Player.Score += len(lost)
-
-				if len(msg.Player.Positions) == 1 {
-					msg.Type = models.MessageUnregister
-					h.players[msg.Player.ID].close = true
-				}
 			} else {
 				switch msg.Player.Direction {
 				case models.DirectionDown:
