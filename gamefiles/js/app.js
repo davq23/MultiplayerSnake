@@ -74,7 +74,17 @@ document.onreadystatechange = function (event) {
                         const player = players.get(msg.player_info.player_id);
 
                         if (player) {
-                            player.update(new Position(msg.player_info.positions[0].X, msg.player_info.positions[0].Y));
+                            if (msg.player_info.positions.length === player.positions.length) {
+                                player.update(new Position(msg.player_info.positions[0].X, msg.player_info.positions[0].Y));
+
+                            } else {
+                                this.positions = new Array(msg.player_info.positions.length);
+
+                                for (let i = 0; i < msg.player_info.positions.length; i++) {
+                                    this.positions[i] = msg.player_info.positions[i];
+                                    
+                                }
+                            }
                             player.setScore(msg.player_info.score);
                         }
 
