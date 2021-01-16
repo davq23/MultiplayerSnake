@@ -51,6 +51,9 @@ func (h *Hub) checkCollision(client *Client, msg *models.Message) {
 				client.Player.Positions = append(client.Player.Positions, lost...)
 				msg.Player.Positions = msg.Player.Positions[:pos]
 				client.Player.Score += len(lost)
+
+				client.Player.PlayerLength = len(client.Player.Positions)
+				msg.Player.PlayerLength = len(msg.Player.Positions)
 			} else {
 				switch msg.Player.Direction {
 				case models.DirectionDown:
