@@ -114,7 +114,7 @@ func (c *Client) WritePump() {
 		c.close = true
 	}()
 
-	tickerPing := time.NewTicker(time.Duration(16666667))
+	tickerPing := time.NewTicker(time.Duration(50 * time.Millisecond))
 
 	//frames := 0
 
