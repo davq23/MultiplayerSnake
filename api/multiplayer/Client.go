@@ -87,8 +87,6 @@ func (c *Client) ReadPump() {
 			c.Send <- msg
 
 		case models.MessageTracking:
-			c.Player.Move()
-
 			msg.Player = c.Player
 
 			if len(c.Send) < maxMessages {
