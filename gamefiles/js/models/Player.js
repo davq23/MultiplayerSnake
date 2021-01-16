@@ -35,23 +35,7 @@ export class Player {
                 this.positions[i] = this.positions[i - 1];
             }
 
-            while(this.positions[0].x != head.x && this.positions[0].y != head.y) {
-                switch (this.direction) {
-                    case playerDown:
-                        this.positions[0].y += 20;
-                        break;
-                    case playerUp:
-                        this.positions[0].y -= 20;
-                        break;
-                    case playerLeft:
-                        this.positions[0].x -= 20;
-                        break;
-                    case playerRight:
-                        this.positions[0].x += 20;
-                        break;
-                    }
-            }
-
+            this.positions[0] = head;
         }
         
     }
