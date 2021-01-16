@@ -6,8 +6,8 @@ import (
 
 // Position is in-game object position
 type Position struct {
-	X int
-	Y int
+	X int `json:"x"`
+	Y int `json:"y"`
 }
 
 func distance(p1 Position, p2 Position) int {

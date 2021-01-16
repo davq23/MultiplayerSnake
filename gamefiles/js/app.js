@@ -64,7 +64,7 @@ document.onreadystatechange = function (event) {
 
                 switch (msg.type) {
                     case MessageRegister:
-                        player1 = new Player(canvas, msg.player_info.player_id, msg.player_info.name, msg.player_info.positions[0].X, msg.player_info.positions[0].Y, msg.player_info.color);
+                        player1 = new Player(canvas, msg.player_info.player_id, msg.player_info.name, msg.player_info.positions[0].x, msg.player_info.positions[0].y, msg.player_info.color);
                         players.set(msg.player_info.player_id, player1);
 
                         const resp = new Message(MessageGetPlayers, player1)
@@ -75,13 +75,13 @@ document.onreadystatechange = function (event) {
 
                         if (player) {
                             if (msg.player_info.positions.length === player.positions.length) {
-                                player.update(new Position(msg.player_info.positions[0].X, msg.player_info.positions[0].Y));
+                                player.update(new Position(msg.player_info.positions[0].x, msg.player_info.positions[0].y));
 
                             } else {
                                 player.positions = new Array(msg.player_info.positions.length);
 
                                 for (let i = 0; i < msg.player_info.positions.length; i++) {
-                                    player.positions[i] = new Position( msg.player_info.positions[i].X, msg.player_info.positions[i].Y);                                    
+                                    player.positions[i] = msg.player_info.positions[i];                                    
                                 }
                             }
                             player.setScore(msg.player_info.score);
@@ -94,7 +94,7 @@ document.onreadystatechange = function (event) {
                         player1 = msg.player_info
 
                         entries.forEach(function (entry) {
-                            players.set(entry[0], new Player(canvas, entry[0], entry[1].name, entry[1].positions[0].X, entry[1].positions[0].Y, entry[1].color));
+                            players.set(entry[0], new Player(canvas, entry[0], entry[1].name, entry[1].positions[0].x, entry[1].positions[0].y, entry[1].color));
                         })
 
                         playerScores.render(players);

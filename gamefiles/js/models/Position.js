@@ -8,8 +8,8 @@ export default class Position {
 
     toJSON() {
         return {
-            X: this.x,
-            Y: this.y
+            x: this.x,
+            y: this.y
         }
     }
 }
