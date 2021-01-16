@@ -74,7 +74,7 @@ document.onreadystatechange = function (event) {
                         const player = players.get(msg.player_info.player_id);
 
                         if (player) {
-                            player.update(msg.player_info.positions[0]);
+                            player.update(new Position(msg.player_info.positions[0].X, msg.player_info.positions[0].Y));
                             player.setScore(msg.player_info.score);
                         }
 
