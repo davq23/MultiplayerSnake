@@ -7,10 +7,6 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-const (
-	maxMessages int = 500
-)
-
 // Client multiplayer game client
 type Client struct {
 	connection *websocket.Conn
