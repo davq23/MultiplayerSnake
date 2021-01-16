@@ -6,9 +6,10 @@ import (
 
 const playerSpeed = 20
 const playerRadius = 4
+const playerDiameter = playerRadius * 2
 const minPlayerPositions = 4
 
-const distanceAdjustment = 24
+const distanceAdjustment = 16
 
 //const distanceAdjustment = 16
 
@@ -72,12 +73,13 @@ func (p *Player) Move() {
 // CheckCollision checks whether the head of another player has collided with the current player and also at which position
 func (p *Player) CheckCollision(player *Player) (bool, int) {
 	n := len(p.Positions)
+	playerTotalLength := playerDiameter * n
 
-	if distance(p.Positions[0], player.Positions[0]) < playerRadius*2*n+distanceAdjustment {
+	if distance(p.Positions[0], player.Positions[0]) <= playerTotalLength+distanceAdjustment {
 		for i := 0; i < n; i++ {
 			dist := distance(p.Positions[i], player.Positions[0])
 
-			if dist <= playerRadius*2+distanceAdjustment {
+			if dist <= playerDiameter+distanceAdjustment {
 				return true, i
 			}
 
