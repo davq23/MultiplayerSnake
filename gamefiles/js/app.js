@@ -78,12 +78,10 @@ document.onreadystatechange = function (event) {
                                 player.update(new Position(msg.player_info.positions[0].X, msg.player_info.positions[0].Y));
 
                             } else {
-                                this.positions.length = 0;
-
-                                this.positions = new Array(msg.player_info.positions.length);
+                                player.positions = new Array(msg.player_info.positions.length);
 
                                 for (let i = 0; i < msg.player_info.positions.length; i++) {
-                                    this.positions[i] = new Position( msg.player_info.positions[i].X, msg.player_info.positions[i].Y);                                    
+                                    player.positions[i] = new Position( msg.player_info.positions[i].X, msg.player_info.positions[i].Y);                                    
                                 }
                             }
                             player.setScore(msg.player_info.score);
