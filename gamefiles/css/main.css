@@ -88,20 +88,16 @@ button:active {
 
 @media(max-width: 500px) {
     .app-body {
-        display: grid;
-        height: 98vh;
-        width: 98vw;
-        grid-template-rows: 100%;
-        grid-template-columns: 100%;
-        padding: 1vh 1vw;
-
+        display: flex;
+        flex-direction: column;
+        height: 95vh;
+        width: 95vw;
+        padding: 2vh 2vw;
     }
 
     #gameboard {
         width: 85%;
         height: 60%;
     }
-    .control {
-        margin-top: 1rem;
-    }
+    
 }
