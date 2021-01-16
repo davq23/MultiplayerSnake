@@ -91,13 +91,13 @@ button:active {
         display: grid;
         height: 98vh;
         width: 87vw;
-        grid-template-rows: 70% auto;
+        grid-template-rows: 100%;
         grid-template-columns: 100%;
         padding: 1vh 1vw;
 
     }
     .control {
-        margin-top: 1vh;
+        margin-top: 1rem;
     }
 
     #gameboard {
