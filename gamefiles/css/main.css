@@ -91,7 +91,7 @@ button:active {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-content: center;
+        align-content: flex-start;
     }
 
     #gameboard {
