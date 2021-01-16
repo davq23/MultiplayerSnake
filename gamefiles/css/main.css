@@ -90,11 +90,16 @@ button:active {
     .app-body {
         display: grid;
         height: 98vh;
-        width: 87vw;
+        width: 98vw;
         grid-template-rows: 100%;
         grid-template-columns: 100%;
         padding: 1vh 1vw;
 
+    }
+
+    #gameboard {
+        width: 85%;
+        height: 60%;
     }
     .control {
         margin-top: 1rem;
