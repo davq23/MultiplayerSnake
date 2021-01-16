@@ -30,8 +30,8 @@ type Hub struct {
 func NewHub(manager *HubManager, logger *utils.Logger) *Hub {
 	return &Hub{
 		Register:   make(chan *Client),
-		Move:       make(chan models.Message),
-		Tracking:   make(chan models.Message),
+		Move:       make(chan models.Message, 500),
+		Tracking:   make(chan models.Message, 500),
 		Unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
 		players:    make(map[string]*Client),
