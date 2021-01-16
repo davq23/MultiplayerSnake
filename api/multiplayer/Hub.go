@@ -103,8 +103,6 @@ func (h *Hub) Run() {
 		case msg := <-h.Tracking:
 			msg.Type = models.MessageMove
 
-			msg.Player.Move()
-
 			for client := range h.clients {
 				h.checkCollision(client, &msg)
 
@@ -118,6 +116,8 @@ func (h *Hub) Run() {
 					}
 				}
 			}
+
+			msg.Player.Move()
 
 			framecount = (framecount + 1) % math.MaxInt64
 		case c := <-h.Register:
