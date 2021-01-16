@@ -90,8 +90,6 @@ button:active {
     .app-body {
         display: flex;
         flex-direction: column;
-        height: 95vh;
-        width: 95vw;
         justify-content: center;
         align-content: center;
     }
