@@ -105,7 +105,7 @@ func (h *Hub) Run() {
 			for client := range h.clients {
 				h.checkCollision(client, &msg)
 
-				if len(client.Send) < 98 {
+				if len(client.Send) < maxMessages-1 {
 					select {
 					case client.Send <- msg:
 					default:
