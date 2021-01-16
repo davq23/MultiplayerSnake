@@ -8,7 +8,7 @@ const playerSpeed = 20
 const playerRadius = 4
 const minPlayerPositions = 4
 
-const distanceAdjustment = 16
+const distanceAdjustment = 24
 
 //const distanceAdjustment = 16
 
@@ -73,11 +73,11 @@ func (p *Player) Move() {
 func (p *Player) CheckCollision(player *Player) (bool, int) {
 	n := len(p.Positions)
 
-	if distance(p.Positions[0], player.Positions[0]) < playerRadius*2*n {
+	if distance(p.Positions[0], player.Positions[0]) < playerRadius*2*n+distanceAdjustment {
 		for i := 0; i < n; i++ {
 			dist := distance(p.Positions[i], player.Positions[0])
 
-			if dist <= playerRadius*2 {
+			if dist <= playerRadius*2+distanceAdjustment {
 				return true, i
 			}
 
