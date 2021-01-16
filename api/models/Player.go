@@ -73,15 +73,16 @@ func (p *Player) Move() {
 func (p *Player) CheckCollision(player *Player) (bool, int) {
 	n := len(p.Positions)
 
-	for i := 0; i < n; i++ {
-		dist := distance(p.Positions[i], player.Positions[0])
+	if distance(p.Positions[0], player.Positions[0]) < playerRadius*2*n {
+		for i := 0; i < n; i++ {
+			dist := distance(p.Positions[i], player.Positions[0])
 
-		if dist <= playerRadius*2+distanceAdjustment {
-			return true, i
+			if dist <= playerRadius*2+distanceAdjustment {
+				return true, i
+			}
+
 		}
-
 	}
-
 	return false, -1
 }
 
