@@ -28,6 +28,18 @@ export class Player {
         }
     }
 
+    update(head) {
+        if (head instanceof Position) {
+
+            for (let i = this.positions.length - 1; i > 0; i--) {
+                this.positions[i] = this.positions[i - 1];
+            }
+
+            this.positions[0] = head;
+        }
+        
+    }
+
     render() {
         
 
