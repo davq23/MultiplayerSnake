@@ -106,8 +106,6 @@ func (h *Hub) Run() {
 		case msg := <-h.Tracking:
 			msg.Type = models.MessageMove
 
-			msg.Player.Move()
-
 			for client := range h.clients {
 				h.checkCollision(client, &msg)
 
@@ -121,6 +119,8 @@ func (h *Hub) Run() {
 					}
 				}
 			}
+
+			msg.Player.Move()
 		case c := <-h.Register:
 			rand.Seed(time.Now().Unix())
 
