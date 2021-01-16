@@ -93,7 +93,7 @@ button:active {
         width: 87vw;
         grid-template-rows: 70% auto;
         grid-template-columns: 100%;
-        padding: 5vw 5vh;
+        padding: 1vw 1vh;
 
     }
     .control {
