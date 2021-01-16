@@ -92,13 +92,12 @@ button:active {
         flex-direction: column;
         height: 95vh;
         width: 95vw;
-        padding: 2vh 2vw;
         justify-content: center;
         align-content: center;
     }
 
     #gameboard {
-        width: 85%;
+        width: 98%;
         height: 60%;
     }
     
