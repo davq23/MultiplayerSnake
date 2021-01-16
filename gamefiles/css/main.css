@@ -93,6 +93,8 @@ button:active {
         height: 95vh;
         width: 95vw;
         padding: 2vh 2vw;
+        justify-content: center;
+        align-content: center;
     }
 
     #gameboard {
