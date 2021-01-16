@@ -83,8 +83,7 @@ document.onreadystatechange = function (event) {
                             player.setScore(msg.player_info.score);
                         }
 
-                        player.render()
-
+                       
                         break;
                     case MessageGetPlayers:
                         const entries = Object.entries(msg.players)
@@ -125,9 +124,9 @@ document.onreadystatechange = function (event) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                /*players.forEach(function (value, key, map) {
+                players.forEach(function (value, key, map) {
                     value.render()
-                })*/
+                })
 
                 frames++
                 frames %= Number.MAX_SAFE_INTEGER
