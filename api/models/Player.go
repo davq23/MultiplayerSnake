@@ -11,7 +11,7 @@ const playerRadius = 4
 const PlayerDiameter = playerRadius * 2
 const minPlayerPositions = 4
 
-const distanceAdjustment = 32
+const distanceAdjustment = 64
 
 //const distanceAdjustment = 16
 
