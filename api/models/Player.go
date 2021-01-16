@@ -6,22 +6,25 @@ import (
 
 const playerSpeed = 20
 const playerRadius = 4
-const playerDiameter = playerRadius * 2
+
+// PlayerDiameter diameter of each player segment
+const PlayerDiameter = playerRadius * 2
 const minPlayerPositions = 4
 
-const distanceAdjustment = 16
+const distanceAdjustment = 32
 
 //const distanceAdjustment = 16
 
 // Player represents a player in the game
 type Player struct {
-	ID           string `json:"player_id"`
-	Name         string `json:"name"`
-	PlayerLength int
-	Color        string     `json:"color"`
-	Positions    []Position `json:"positions"`
-	Direction    Direction  `json:"direction"`
-	Score        int        `json:"score,omitempty"`
+	ID                string `json:"player_id"`
+	Name              string `json:"name"`
+	PlayerLength      int
+	PlayerTotalLength int
+	Color             string     `json:"color"`
+	Positions         []Position `json:"positions"`
+	Direction         Direction  `json:"direction"`
+	Score             int        `json:"score,omitempty"`
 }
 
 // NewPlayer returns a *Player
@@ -29,10 +32,11 @@ func NewPlayer(name string, head Position, direction Direction) (p *Player) {
 	positions := make([]Position, minPlayerPositions, 8)
 
 	p = &Player{
-		Positions:    positions,
-		Direction:    direction,
-		PlayerLength: minPlayerPositions,
-		Name:         name,
+		Positions:         positions,
+		Direction:         direction,
+		PlayerLength:      minPlayerPositions,
+		PlayerTotalLength: minPlayerPositions * PlayerDiameter,
+		Name:              name,
 	}
 
 	p.ChangeHead(head)
@@ -74,13 +78,11 @@ func (p *Player) Move() {
 
 // CheckCollision checks whether the head of another player has collided with the current player and also at which position
 func (p *Player) CheckCollision(player *Player) (bool, int) {
-	playerTotalLength := playerDiameter * p.PlayerLength
-
-	if distance(p.Positions[0], player.Positions[0]) < playerTotalLength+distanceAdjustment {
+	if distance(p.Positions[0], player.Positions[0]) < p.PlayerTotalLength+distanceAdjustment {
 		for i := 0; i < p.PlayerLength; i++ {
 			dist := distance(p.Positions[i], player.Positions[0])
 
-			if dist <= playerDiameter+distanceAdjustment {
+			if dist <= PlayerDiameter+distanceAdjustment {
 				return true, i
 			}
 

@@ -54,6 +54,9 @@ func (h *Hub) checkCollision(client *Client, msg *models.Message) {
 
 				client.Player.PlayerLength = len(client.Player.Positions)
 				msg.Player.PlayerLength = len(msg.Player.Positions)
+
+				client.Player.PlayerTotalLength = client.Player.PlayerLength * models.PlayerDiameter
+				msg.Player.PlayerTotalLength = msg.Player.PlayerLength * models.PlayerDiameter
 			} else {
 				switch msg.Player.Direction {
 				case models.DirectionDown:
