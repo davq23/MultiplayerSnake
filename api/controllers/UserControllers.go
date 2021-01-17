@@ -40,9 +40,7 @@ func NewUserController(hubManager *multiplayer.HubManager, logger *utils.Logger)
 func (uc *UserController) checkInput(input string) error {
 	matches := uc.exp.FindAllStringIndex(input, -1)
 
-	uc.logger.LogChan <- matches
-
-	if len(matches) > 0 {
+	if len(matches) > 0 || input == "" {
 		return errors.New("Invalid input")
 	}
 
@@ -111,7 +109,7 @@ func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.SetCookie(w, &http.Cookie{Name: "papoman", Value: token, Path: "/", SameSite: http.SameSiteStrictMode, HttpOnly: true})
+	http.SetCookie(w, &http.Cookie{Name: "papoman", Value: token, Path: "/", SameSite: http.SameSiteStrictMode, HttpOnly: true, Secure: true})
 }
 
 // StartGame starts the game
@@ -188,5 +186,5 @@ func (uc *UserController) CreateHub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.SetCookie(w, &http.Cookie{Name: "papoman", Value: token, Path: "/", SameSite: http.SameSiteStrictMode, HttpOnly: true})
+	http.SetCookie(w, &http.Cookie{Name: "papoman", Value: token, Path: "/", SameSite: http.SameSiteStrictMode, HttpOnly: true, Secure: true})
 }
