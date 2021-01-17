@@ -56,8 +56,8 @@ export class Player {
 
         this.ctx.beginPath();
         this.ctx.fillStyle = 'white';
-        this.ctx.font = '100px Arial';
-        this.ctx.fillText(this.name, this.positions[0].x, this.positions[0].y, 100);
+        this.ctx.font = '50px Lucida Sans';
+        this.ctx.fillText(this.name, this.positions[0].x, this.positions[0].y, 200);
         this.ctx.closePath();
     }
 
