@@ -40,7 +40,7 @@ func NewUserController(hubManager *multiplayer.HubManager, logger *utils.Logger)
 func (uc *UserController) checkInput(input string) error {
 	matches := uc.exp.FindAllStringIndex(input, -1)
 
-	if len(matches) > 0 || input == "" {
+	if input == "" || len(matches) > 0 {
 		return errors.New("Invalid input")
 	}
 
