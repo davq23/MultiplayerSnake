@@ -58,12 +58,12 @@ func (c *Client) ReadPump() {
 
 		switch msg.Type {
 		case models.MessageMove:
-			msg.Player.ID = c.Player.ID
+			//msg.Player.ID = c.Player.ID
 			c.Player.Direction = msg.Player.Direction
 
-			msg.Player = c.Player
+			/*msg.Player = c.Player
 
-			c.hub.Move <- msg
+			c.hub.Move <- msg*/
 
 		case models.MessageRegister:
 
@@ -139,14 +139,6 @@ func (c *Client) WritePump() {
 				var msg models.Message
 				msg.Type = models.MessageTracking
 				msg.Player = c.Player
-
-				if !c.close {
-					if err := c.connection.WriteJSON(msg); err != nil {
-						c.hub.logger.LogChan <- err
-
-						return
-					}
-				}
 
 				if len(c.Send) < maxMessages {
 					c.hub.Tracking <- msg
