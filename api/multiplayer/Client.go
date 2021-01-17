@@ -85,13 +85,10 @@ func (c *Client) ReadPump() {
 			msg.Players = &players
 
 			c.Send <- msg
+			/*
+				case models.MessageTracking:
+					msg.Player = c.Player*/
 
-		case models.MessageTracking:
-			msg.Player = c.Player
-
-			if len(c.Send) < maxMessages {
-				c.hub.Tracking <- msg
-			}
 		}
 
 	}
@@ -108,7 +105,7 @@ func (c *Client) WritePump() {
 		c.close = true
 	}()
 
-	tickerPing := time.NewTicker(time.Duration(100 * time.Millisecond))
+	tickerPing := time.NewTicker(time.Duration(trackingTick) * time.Millisecond))
 
 	//frames := 0
 
@@ -149,6 +146,10 @@ func (c *Client) WritePump() {
 
 						return
 					}
+				}
+
+				if len(c.Send) < maxMessages {
+					c.hub.Tracking <- msg
 				}
 
 			}
