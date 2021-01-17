@@ -97,6 +97,7 @@ button:active {
 
     #gameboard {
         width: 98%;
+        max-height: 68vh;
     }
     
 }
