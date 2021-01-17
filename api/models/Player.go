@@ -11,7 +11,7 @@ const playerRadius = 4
 const PlayerDiameter = playerRadius * 2
 const minPlayerPositions = 4
 
-const distanceAdjustment = 100
+const distanceAdjustment = playerSpeed
 
 // Player represents a player in the game
 type Player struct {
