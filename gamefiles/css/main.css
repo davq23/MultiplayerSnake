@@ -90,14 +90,14 @@ button:active {
     .app-body {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-content: flex-start;
         padding: 0.5rem;
     }
 
     #gameboard {
         width: 98%;
-        max-height: 68vh;
+        max-height: 70vh;
     }
     
 }
