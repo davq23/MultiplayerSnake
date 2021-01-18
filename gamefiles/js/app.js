@@ -37,6 +37,21 @@ document.onreadystatechange = function (event) {
 
             let player1 = new Player(canvas, '', '', 0, 0, 'black');
 
+            function main() {
+                ctx.fillStyle = 'black';
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                players.forEach(function (value, key, map) {
+                    value.render()
+                })
+
+                frames++
+                frames %= Number.MAX_SAFE_INTEGER
+                // requestAnimationFrame(main);
+            }
+
             let frames = 0;
 
             ws.onopen = function (event) {
@@ -118,26 +133,15 @@ document.onreadystatechange = function (event) {
 
                         break;
                 }
+
+                requestAnimationFrame(main);
             }
 
             playerControl1.render();
 
-            function main() {
-                ctx.fillStyle = 'black';
+           
 
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                players.forEach(function (value, key, map) {
-                    value.render()
-                })
-
-                frames++
-                frames %= Number.MAX_SAFE_INTEGER
-                requestAnimationFrame(main);
-            }
-
-            requestAnimationFrame(main);
+            
         } catch (err) {
             console.log(err);
         }
