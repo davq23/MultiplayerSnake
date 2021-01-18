@@ -44,3 +44,19 @@ body {
 .hub:active {
     background-color: rgb(19, 164, 169);
 }
+
+.spinning {
+    animation: spinning;
+    animation-duration: 5ms;
+    animation-iteration-count: infinite;
+    animation-delay: 0.5ms;  
+}
+
+@keyframes spinning {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}

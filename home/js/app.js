@@ -29,11 +29,17 @@ document.onreadystatechange = function() {
             const response = await fetch('/hubs');
         
             if (response.status === 200) {
+                const fragment = document.createDocumentFragment();
+
+                const message = document.createElement('h3');
+                message.innerText = 'Loading'
+                message.classList.add('spinning') 
+
+                hubList.appendChild(message);
+
+
                 const hubs = await response.json();
         
-                console.log(hubs);
-        
-                const fragment = document.createDocumentFragment();
                 hubList.innerHTML = '';
 
                 if (hubs && hubs.length > 0) {
@@ -65,9 +71,9 @@ document.onreadystatechange = function() {
                         fragment.appendChild(li);
                     });
                 } else {
-                    const h3 = document.createElement('h3');
-                    h3.innerText = 'No hubs available';
-                    fragment.appendChild(h3);
+                    message.innerText = 'No hubs available';
+                    message.classList.remove('spinning');
+                    fragment.appendChild(message)
                 }
         
                 
