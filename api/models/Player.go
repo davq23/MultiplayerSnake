@@ -11,7 +11,7 @@ const playerRadius = 4
 const PlayerDiameter = playerRadius * 2
 const minPlayerPositions = 4
 
-const distanceAdjustment = 16
+const distanceAdjustment = 100
 
 // Player represents a player in the game
 type Player struct {
@@ -76,7 +76,7 @@ func (p *Player) Move() {
 
 // CheckCollision checks whether the head of another player has collided with the current player and also at which position
 func (p *Player) CheckCollision(player *Player) (bool, int) {
-	if distance(p.Positions[0], player.Positions[0]) < p.PlayerTotalLength+distanceAdjustment {
+	if distance(p.Positions[0], player.Positions[0]) <= p.PlayerTotalLength+distanceAdjustment {
 		for i := 0; i < p.PlayerLength; i++ {
 			dist := distance(p.Positions[i], player.Positions[0])
 
