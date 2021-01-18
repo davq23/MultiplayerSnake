@@ -46,8 +46,6 @@ document.onreadystatechange = function (event) {
                 players.forEach(function (value, key, map) {
                     value.render()
                 })
-
-                // requestAnimationFrame(main);
             }
 
             ws.onopen = function (event) {
