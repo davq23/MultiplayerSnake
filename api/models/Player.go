@@ -4,7 +4,8 @@ import (
 	"davidmultiplayersnake/api/config"
 )
 
-const playerSpeed = 40
+const playerHSpeed = 60
+const playerVSpeed = 40
 const playerRadius = 4
 
 // PlayerDiameter diameter of each player segment
@@ -51,13 +52,13 @@ func (p *Player) Move() {
 
 	switch p.Direction {
 	case DirectionDown:
-		p.Positions[0].Y += playerSpeed
+		p.Positions[0].Y += playerVSpeed
 	case DirectionLeft:
-		p.Positions[0].X -= playerSpeed
+		p.Positions[0].X -= playerHSpeed
 	case DirectionUp:
-		p.Positions[0].Y -= playerSpeed
+		p.Positions[0].Y -= playerVSpeed
 	case DirectionRight:
-		p.Positions[0].X += playerSpeed
+		p.Positions[0].X += playerHSpeed
 	}
 
 	if p.Positions[0].X > config.PlayfieldWidth {
@@ -95,13 +96,13 @@ func (p *Player) ChangeHead(head Position) {
 
 	if p.Direction == DirectionLeft || p.Direction == DirectionRight {
 		for i := len(p.Positions) - 1; i > 0; i-- {
-			p.Positions[i].X = p.Positions[0].X + playerRadius*2*i + playerSpeed
+			p.Positions[i].X = p.Positions[0].X + playerRadius*2*i + playerHSpeed
 			p.Positions[i].Y = p.Positions[0].Y
 		}
 	} else {
 		for i := len(p.Positions) - 1; i > 0; i-- {
 			p.Positions[i].X = p.Positions[0].X
-			p.Positions[i].Y = p.Positions[0].Y + playerRadius*2*i + playerSpeed
+			p.Positions[i].Y = p.Positions[0].Y + playerRadius*2*i + playerVSpeed
 		}
 	}
 }
