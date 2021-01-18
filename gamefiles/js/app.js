@@ -47,12 +47,8 @@ document.onreadystatechange = function (event) {
                     value.render()
                 })
 
-                frames++
-                frames %= Number.MAX_SAFE_INTEGER
                 // requestAnimationFrame(main);
             }
-
-            let frames = 0;
 
             ws.onopen = function (event) {
 
