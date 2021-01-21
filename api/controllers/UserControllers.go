@@ -112,7 +112,7 @@ func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if uc.checkInput(hubName) != nil {
+	if uc.checkInput(username) != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		w.Write([]byte("Player name can only have alphanumeric characters"))
 		return
