@@ -28,7 +28,7 @@ func DecipherClaims(token *jwt.Token) (PlayerClaims, error) {
 	playerClaims := PlayerClaims{
 		HubName:     mapClaims["hub_name"].(string),
 		PlayerName:  mapClaims["player_name"].(string),
-		PlayerScore: mapClaims["player_score"].(int),
+		PlayerScore: int(mapClaims["player_score"].(float64)),
 	}
 
 	playerClaims.StandardClaims.ExpiresAt = int64(mapClaims["exp"].(float64))
