@@ -28,7 +28,7 @@ const players = new Map();
 document.onreadystatechange = function (event) {
     if (this.readyState === 'complete') {
         try {
-            const ws = new WebSocket(`wss://rocky-hamlet-16573.herokuapp.com/game`);
+            const ws = new WebSocket(`wss://rocky-hamlet-16573.herokuapp.com/game?user_info=${localStorage.getItem('game-token')}`);
 
             const playerControl1 = new PlayerControl(control);
             const playerScores = new Scores(scores);
@@ -74,6 +74,7 @@ document.onreadystatechange = function (event) {
                 switch (msg.type) {
                     case MessageRegister:
                         player1 = new Player(canvas, msg.player_info.player_id, msg.player_info.name, msg.player_info.positions[0].x, msg.player_info.positions[0].y, msg.player_info.color);
+                        player1.setScore(msg.player_info.score); 
                         players.set(msg.player_info.player_id, player1);
 
                         const resp = new Message(MessageGetPlayers, player1)

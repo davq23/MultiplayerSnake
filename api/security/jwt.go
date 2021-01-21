@@ -7,11 +7,12 @@ import (
 )
 
 // GetToken creates a new access token that expires in timeout minutes
-func GetToken(playerName, hubname, secret string, timeout int64) (token string, err error) {
+func GetToken(playerName, hubname, secret string, playerScore int, timeout int64) (token string, err error) {
 	// Auth claims
 	claims := PlayerClaims{}
 	claims.HubName = hubname
 	claims.PlayerName = playerName
+	claims.PlayerScore = playerScore
 	claims.StandardClaims.ExpiresAt = timeout
 
 	// Sign token

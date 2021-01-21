@@ -11,6 +11,7 @@ import (
 	"math/rand"
 	"net/http"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -70,6 +71,21 @@ func getHubName(w http.ResponseWriter, r *http.Request) (string, string, error) 
 	return hubName, username, nil
 }
 
+func extractToken(r *http.Request) (token string, err error) {
+	bearToken := r.Header.Get("Authorization")
+
+	strArr := strings.Split(bearToken, " ")
+
+	if len(strArr) != 2 || strArr[0] != "Bearer" {
+		err = errors.New("Invalid Token")
+		return
+	}
+
+	token = strArr[1]
+
+	return
+}
+
 // FetchHubs fetches all hubs and serializes them into JSON
 func (uc *UserController) FetchHubs(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
@@ -101,7 +117,27 @@ func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Player name can only have alphanumeric characters"))
 		return
 	}
-	token, err := security.GetToken(username, hubName, config.JWTSecret, int64(time.Duration(time.Minute*15)))
+
+	tokenString, err := extractToken(r)
+
+	if err != nil {
+		tokenString, err = security.GetToken(username, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+	} else {
+		token, err := security.VerifyToken(tokenString, config.JWTSecret)
+
+		claims, err := security.DecipherClaims(token)
+
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if claims.HubName != hubName {
+			tokenString, err = security.GetToken(username, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+		}
+	}
+
+	err = json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
 
 	if err != nil {
 		uc.logger.LogChan <- err.Error()
@@ -109,7 +145,6 @@ func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.SetCookie(w, &http.Cookie{Name: "papoman", Value: token, Path: "/", SameSite: http.SameSiteStrictMode, HttpOnly: true, Secure: true})
 }
 
 // StartGame starts the game
@@ -139,6 +174,7 @@ func (uc *UserController) StartGame(w http.ResponseWriter, r *http.Request) {
 	client := multiplayer.NewClient(connection, h, nil)
 
 	client.Player = models.NewPlayer(playerClaims.PlayerName, models.Position{X: rand.Intn(1999) + 1, Y: rand.Intn(999) + 1}, models.Direction(rand.Intn(4)+1))
+	client.Player.Score = playerClaims.PlayerScore
 
 	h.Register <- client
 
@@ -177,7 +213,7 @@ func (uc *UserController) CreateHub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := security.GetToken(username, hubName, config.JWTSecret, int64(time.Duration(time.Minute*15)))
+	tokenString, err := security.GetToken(username, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
 
 	if err != nil {
 		uc.logger.LogChan <- err.Error()
@@ -186,5 +222,11 @@ func (uc *UserController) CreateHub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.SetCookie(w, &http.Cookie{Name: "papoman", Value: token, Path: "/", SameSite: http.SameSiteStrictMode, HttpOnly: true, Secure: true})
+	err = json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
+
+	if err != nil {
+		uc.logger.LogChan <- err.Error()
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }

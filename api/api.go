@@ -25,15 +25,15 @@ func Run() {
 	mux.HandleFunc("/hubs", middlewares.MethodMiddleware(middlewares.JWTMiddleware(uc.FetchHubs, false), http.MethodGet))
 
 	// Websocket route
-	mux.HandleFunc("/game", middlewares.MethodMiddleware(middlewares.JWTMiddleware(uc.StartGame, true), http.MethodGet))
+	mux.HandleFunc("/game", middlewares.MethodMiddleware(middlewares.WSJWTMiddleware(uc.StartGame), http.MethodGet))
 
 	// Frontend routes
 	fsGame := http.StripPrefix("/play/", http.FileServer(http.Dir("./gamefiles")))
 	fsHome := http.FileServer(http.Dir("./home"))
 
-	mux.HandleFunc("/play/", middlewares.MethodMiddleware(middlewares.JWTMiddleware(fsGame.ServeHTTP, true), http.MethodGet))
+	mux.HandleFunc("/play/", middlewares.MethodMiddleware(fsGame.ServeHTTP, http.MethodGet))
 
-	mux.HandleFunc("/", middlewares.MethodMiddleware(middlewares.JWTMiddleware(fsHome.ServeHTTP, false), http.MethodGet))
+	mux.HandleFunc("/", middlewares.MethodMiddleware(fsHome.ServeHTTP, http.MethodGet))
 
 	// HTTP Server
 	s := &http.Server{
