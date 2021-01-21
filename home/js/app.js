@@ -4,12 +4,9 @@ const createHub = document.getElementById('create-hub');
 
 document.onreadystatechange = function() {
     if (document.readyState == 'complete') {
-        function saveToken(response) {
-            response.json().then(
-                function(token) {
-                    localStorage.setItem('game-token', token.token);
-                }
-            )
+        async function saveToken(response) {
+            const token = await response.json().
+            localStorage.setItem('game-token', token.token);
         }
 
         createHub.onclick = async function (event) {
@@ -29,7 +26,7 @@ document.onreadystatechange = function() {
         
         
             if (response.status == 200) {
-                saveToken(response);
+                await saveToken(response);
                 window.location.href = '/play';
             } else {
                 document.getElementById('create-hub-err').innerText = await response.text();
@@ -68,16 +65,16 @@ document.onreadystatechange = function() {
                             }
     
                             const resp = await fetch('/hubs/join', {
-                                method: 'post',
-                                credentials: 'include',
+                                'method': 'post',
+                                'credentials': 'include',
                                 'headers': new Headers({
                                     'Authorization': localStorage.getItem('game-token'), 
                                 }),
-                                body: JSON.stringify(body)
+                                'body': JSON.stringify(body),
                             });
             
                             if (resp.status === 200) {
-                                saveToken(response);
+                                await saveToken(response);
                                 window.location.href = '/play';
                             } else {
                                 document.getElementById('join-hub-err').innerText = await response.text();
