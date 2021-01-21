@@ -110,7 +110,9 @@ document.onreadystatechange = function (event) {
                         playerScores.render(players);
 
                         break;
-
+                    case MessageRefresh:
+                        localStorage.setItem('game-token', msg.new_token)
+                        break;
                     case MessageTracking:
 
                         const response = new Message(MessageTracking, player1);

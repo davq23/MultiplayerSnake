@@ -6,6 +6,7 @@ export const MessageMove = 1;
 export const MessageRegister = 2;
 export const MessageUnregister = 3;
 export const MessageGetPlayers = 4;
+export const MessageRefresh = 5;
 
 
 export class Message {

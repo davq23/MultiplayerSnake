@@ -17,6 +17,7 @@ type PlayerClaims struct {
 	jwt.StandardClaims
 }
 
+// DecipherClaims converts Map claims into playerClaims or returns an error
 func DecipherClaims(token *jwt.Token) (PlayerClaims, error) {
 	mapClaims, ok := token.Claims.(jwt.MapClaims)
 
@@ -27,7 +28,7 @@ func DecipherClaims(token *jwt.Token) (PlayerClaims, error) {
 	playerClaims := PlayerClaims{
 		HubName:     mapClaims["hub_name"].(string),
 		PlayerName:  mapClaims["player_name"].(string),
-		PlayerScore: mapClaims["player_name"].(int),
+		PlayerScore: mapClaims["player_score"].(int),
 	}
 
 	playerClaims.StandardClaims.ExpiresAt = int64(mapClaims["exp"].(float64))

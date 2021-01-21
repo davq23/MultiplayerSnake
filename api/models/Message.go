@@ -16,8 +16,8 @@ const (
 	MessageUnregister MessageType = 3
 	// MessageGetPlayers to get all other players
 	MessageGetPlayers MessageType = 4
-	// MessageCollide to test collision
-	MessageCollide MessageType = 5
+	// MessageRefresh regenerates token
+	MessageRefresh MessageType = 5
 )
 
 // Message  sent through Websockets
@@ -27,4 +27,5 @@ type Message struct {
 	ReceivedAt time.Time          `json:"received_at,omitempty"`
 	SentAt     time.Time          `json:"sent_at,omitempty"`
 	Players    *map[string]Player `json:"players,omitempty"`
+	NewToken   string             `json:"new_token,omitempty"`
 }
