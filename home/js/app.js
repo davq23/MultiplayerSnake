@@ -5,7 +5,7 @@ const createHub = document.getElementById('create-hub');
 document.onreadystatechange = function() {
     if (document.readyState == 'complete') {
         async function saveToken(response) {
-            const token = await response.json().
+            const token = await response.json();
             localStorage.setItem('game-token', token.token);
         }
 
