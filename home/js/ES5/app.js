@@ -110,36 +110,41 @@ document.onreadystatechange = function() {
 
             hubList.appendChild(message);
 
-            var response = await fetch('/hubs');
-        
-            if (response.status === 200) {
-                var fragment = document.createDocumentFragment();
+            var xhr = new XMLHttpRequest();
 
-                var hubs = await response.json();
-        
-                hubList.innerHTML = '';
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var fragment = document.createDocumentFragment();
 
-                if (hubs && hubs.length > 0) {
-                    hubs.forEach(hub => {
-                        var li = document.createElement('li');
-                        li.innerText = hub.name + " : " +  hub.player_num + (hub.player_num !== 1 ? ' players' : ' player');
-                        li.classList.add('hub');
-    
-                        li.onclick = getEnterHubFunction(hub);
+                    var hubs = JSON.parse(this.responseText);
             
-                        fragment.appendChild(li);
-                    });
-                } else {
-                    message.innerText = 'No hubs available';
-                    message.classList.remove('spinning');
-                    fragment.appendChild(message)
-                }
+                    hubList.innerHTML = '';
+
+                    if (hubs && hubs.length > 0) {
+                        hubs.forEach(hub => {
+                            var li = document.createElement('li');
+                            li.innerText = hub.name + " : " +  hub.player_num + (hub.player_num !== 1 ? ' players' : ' player');
+                            li.classList.add('hub');
         
+                            li.onclick = getEnterHubFunction(hub);
                 
-                hubList.appendChild(fragment);
+                            fragment.appendChild(li);
+                        });
+                    } else {
+                        message.innerText = 'No hubs available';
+                        message.classList.remove('spinning');
+                        fragment.appendChild(message)
+                    }
+                    
+                    hubList.appendChild(fragment);     
+                } 
+                else if (this.readyState == 4 && this.status != 200) {
+                    document.getElementById('create-hub-err').innerText = this.responseText;
+                }
             }
-        
-        
+
+            xhr.open('GET', '/hubs');
+            xhr.send();
         }
         
         hubRefresh.onclick = getHubs;
