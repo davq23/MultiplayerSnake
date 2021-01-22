@@ -80,6 +80,7 @@ document.onreadystatechange = function (event) {
                         const resp = new Message(MessageGetPlayers, player1)
                         ws.send(JSON.stringify(resp))
 
+                        break;
                     case MessageMove:
                         const player = players.get(msg.player_info.player_id);
 
