@@ -6,7 +6,7 @@ var MessageGetPlayers = 4;
 var MessageRefresh = 5;
 
 function Message(type, player) {
-    if (typeof(type) == 'number' && player instanceof Player) {
+    if (typeof(type) == 'number' && player instanceof Object) {
         this.type = type;
         this.player = player;
     }
