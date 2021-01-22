@@ -108,7 +108,7 @@ func (c *Client) WritePump() {
 	}()
 
 	tickerPing := time.NewTicker(time.Duration(trackingTick) * time.Millisecond)
-	tickerRefresh := time.NewTicker(time.Duration(3) * time.Minute)
+	tickerRefresh := time.NewTicker(time.Duration(1) * time.Minute)
 
 	c.connection.SetPongHandler(func(string) error {
 		c.connection.SetWriteDeadline(time.Now().Add(time.Duration(time.Minute)))
