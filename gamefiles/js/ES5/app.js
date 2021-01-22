@@ -58,7 +58,7 @@ document.onreadystatechange = function (event) {
             }
 
             function moveEvent(direction) {
-                return async function () {
+                return function () {
                     var msg = new Message(MessageMove, playerUser);
 
                     msg.player.direction = direction
