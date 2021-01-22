@@ -75,7 +75,11 @@ export class Player {
         if (score && this.score != score) {
             this.score = score;
             const sc = document.getElementById(this.id + '-score');
-            localStorage.setItem('game-token', token);
+            
+            if (token) {
+                localStorage.setItem('game-token', token);
+            }
+
             if (sc) sc.innerText = `${this.name} : ${this.score}`;
         }
     }
