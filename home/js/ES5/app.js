@@ -121,7 +121,7 @@ document.onreadystatechange = function() {
                     hubList.innerHTML = '';
 
                     if (hubs && hubs.length > 0) {
-                        hubs.forEach(hub => {
+                        hubs.forEach(function(hub) {
                             var li = document.createElement('li');
                             li.innerText = hub.name + " : " +  hub.player_num + (hub.player_num !== 1 ? ' players' : ' player');
                             li.classList.add('hub');
