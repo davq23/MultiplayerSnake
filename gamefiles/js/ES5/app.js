@@ -26,7 +26,7 @@ document.onreadystatechange = function (event) {
             
 
             var playerControl1 = new PlayerControl(control);
-            var playerScores = new Scores(scores);
+            var playerScores = new ScoreTable(scores);
 
             var ctx = canvas.getContext('2d');
 
