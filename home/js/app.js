@@ -79,7 +79,7 @@ document.onreadystatechange = function() {
                             });
             
                             if (resp.status === 200) {
-                                await saveToken(response);
+                                await saveToken(resp);
                                 window.location.href = '/play';
                             } else {
                                 document.getElementById('join-hub-err').innerText = await response.text();
