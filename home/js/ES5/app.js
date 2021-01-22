@@ -55,8 +55,8 @@ document.onreadystatechange = function() {
                     }
                 }
 
-                xhr.setRequestHeader("Authorization", authToken);
                 xhr.open('POST', '/hubs/join');
+                xhr.setRequestHeader("Authorization", authToken);
                 xhr.send(JSON.stringify(body));
             }
         }
@@ -97,8 +97,8 @@ document.onreadystatechange = function() {
                 }
             }
 
-            xhr.setRequestHeader("Authorization", authToken);
             xhr.open('POST', '/hubs/create');
+            xhr.setRequestHeader("Authorization", authToken);
             xhr.send(JSON.stringify(body));
         
         }
