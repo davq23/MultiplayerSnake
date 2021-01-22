@@ -61,7 +61,7 @@ document.onreadystatechange = function() {
             }
         }
 
-        createHub.onclick = async function (event) {
+        createHub.onclick = function (event) {
             var body = {
                 'username': document.getElementById('username').value,
                 'hubname': document.getElementById('hubname').value
@@ -103,7 +103,7 @@ document.onreadystatechange = function() {
         
         }
 
-        async function getHubs(event) {
+        function getHubs(event) {
             var message = document.createElement('h3');
             message.innerText = '<<'
             message.classList.add('spinning') 
