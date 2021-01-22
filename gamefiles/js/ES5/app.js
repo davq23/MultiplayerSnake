@@ -9,23 +9,26 @@ document.onreadystatechange = function (event) {
         try {
             var ws = null;
 
+            var webSocketRoute = 'wss://rocky-hamlet-16573.herokuapp.com/game?user_info=';
+
             if (localStorage) {
-                ws = new WebSocket("wss://rocky-hamlet-16573.herokuapp.com/game?user_info="+localStorage.getItem('game-token'));
-            } else{
+                webSocketRoute += localStorage.getItem('game-token');
+
+            } else {
                 var cookies = document.cookie.split(';=');
 
                 var gameTokenPos = cookies.findIndex('game-token');
 
                 if (gameTokenPos >= 0 || gameTokenPos < cookies.length - 1) {
-                    ws = new WebSocket("wss://rocky-hamlet-16573.herokuapp.com/game?user_info="+cookies[gameTokenPos + 1]);
+                    webSocketRoute += cookies[gameTokenPos + 1];
                 } else {
-                    throw 'Unable to connect web sockets';
+                    throw 'Unable to send user state';
                 }
-                
             }
-            
 
-            var playerControl1 = new PlayerControl(control);
+            ws = new WebSocket(webSocketRoute);
+
+            var playerControl = new PlayerControl(control);
             var playerScores = new ScoreTable(scores);
 
             var ctx = canvas.getContext('2d');
@@ -38,9 +41,9 @@ document.onreadystatechange = function (event) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                for (var key in players) {
-                    if (players.hasOwnProperty(key)) {
-                        players[key].render();
+                for (var id in players) {
+                    if (players.hasOwnProperty(id)) {
+                        players[id].render();
                     }
                 }
             }
@@ -63,7 +66,7 @@ document.onreadystatechange = function (event) {
                 }
             }
 
-            playerControl1.setEvents(moveEvent(playerUp), moveEvent(playerDown), moveEvent(playerLeft), moveEvent(playerRight));
+            playerControl.setEvents(moveEvent(playerUp), moveEvent(playerDown), moveEvent(playerLeft), moveEvent(playerRight));
 
             ws.onmessage = function (event) {
                 var msg = JSON.parse(event.data);
@@ -92,6 +95,7 @@ document.onreadystatechange = function (event) {
                                     player.positions.push(msg.player_info.positions[i]);                                    
                                 }
                             }
+
                             player.setScore(msg.player_info.score, msg.new_token);
                         }
 
@@ -120,7 +124,7 @@ document.onreadystatechange = function (event) {
                         delete players[msg.player_info.player_id];
 
                         if (playerUser.id === msg.player_info.player_id) {
-                            playerControl1.anchor.innerHTML = `<h3 style="color:red;">EATEN</h3>`; 
+                            playerControl.anchor.innerHTML = `<h3 style="color:red;">EATEN</h3>`; 
                         }
 
                         playerScores.render(players);
@@ -131,7 +135,7 @@ document.onreadystatechange = function (event) {
                 requestAnimationFrame(main);
             }
 
-            playerControl1.render();
+            playerControl.render();
 
         } catch (err) {
             alert(err);
