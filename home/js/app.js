@@ -67,7 +67,7 @@ document.onreadystatechange = function() {
 
         async function getHubs(event) {
             const message = document.createElement('h3');
-            message.innerText = 'Loading'
+            message.innerText = '<<'
             message.classList.add('spinning') 
 
             hubList.appendChild(message);
