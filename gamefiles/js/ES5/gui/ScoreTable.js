@@ -27,7 +27,7 @@ function ScoreTable(anchor) {
 
                     text.id = map[key].id + '-score';
 
-                    text.innerText = `${map[key].name}: ${map[key].score}`;
+                    text.innerText = map[key].name+":"+map[key].score;
                     li.appendChild(bullet);
                     li.appendChild(text);
                     
