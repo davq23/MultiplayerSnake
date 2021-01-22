@@ -30,7 +30,7 @@ document.onreadystatechange = function (event) {
 
             var ctx = canvas.getContext('2d');
 
-            var player1 = new Player(canvas, '', '', 0, 0, 'black');
+            var playerUser = new Player(canvas, '', '', 0, 0, 'black');
 
             function main() {
                 ctx.fillStyle = 'black';
@@ -56,7 +56,7 @@ document.onreadystatechange = function (event) {
 
             function moveEvent(direction) {
                 return async function () {
-                    var msg = new Message(MessageMove, player1);
+                    var msg = new Message(MessageMove, playerUser);
 
                     msg.player.direction = direction
                     ws.send(JSON.stringify(msg))
@@ -70,11 +70,11 @@ document.onreadystatechange = function (event) {
 
                 switch (msg.type) {
                     case MessageRegister:
-                        player1 = new Player(canvas, msg.player_info.player_id, msg.player_info.name, msg.player_info.positions[0].x, msg.player_info.positions[0].y, msg.player_info.color);
-                        player1.setScore(msg.player_info.score); 
-                        players[msg.player_info.player_id] = player1;
+                        playerUser = new Player(canvas, msg.player_info.player_id, msg.player_info.name, msg.player_info.positions[0].x, msg.player_info.positions[0].y, msg.player_info.color);
+                        playerUser.setScore(msg.player_info.score); 
+                        players[msg.player_info.player_id] = playerUser;
 
-                        var resp = new Message(MessageGetPlayers, player1)
+                        var resp = new Message(MessageGetPlayers, playerUser)
                         ws.send(JSON.stringify(resp))
 
                         break;
@@ -99,7 +99,7 @@ document.onreadystatechange = function (event) {
                         break;
                     case MessageGetPlayers:
 
-                        player1 = msg.player_info
+                        playerUser = msg.player_info
 
                         for (var p in msg.players) {
                             if (msg.players.hasOwnProperty(p)) {
@@ -112,14 +112,14 @@ document.onreadystatechange = function (event) {
                         break;
                     case MessageTracking:
 
-                        var response = new Message(MessageTracking, player1);
+                        var response = new Message(MessageTracking, playerUser);
                         ws.send(JSON.stringify(response))
 
                         break;
                     case MessageUnregister:
                         delete players[msg.player_info.player_id];
 
-                        if (player1.id === msg.player_info.player_id) {
+                        if (playerUser.id === msg.player_info.player_id) {
                             playerControl1.anchor.innerHTML = `<h3 style="color:red;">EATEN</h3>`; 
                         }
 
