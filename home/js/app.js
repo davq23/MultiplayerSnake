@@ -14,7 +14,7 @@ document.onreadystatechange = function() {
             }
         }
 
-        async function getEnterHubFunction(hub) {
+        function getEnterHubFunction(hub) {
             return async function(event) {
                 const body = {
                     'username': document.getElementById('username').value,
@@ -87,7 +87,7 @@ document.onreadystatechange = function() {
                         li.innerText = `${hub.name} : ${hub.player_num} ${hub.player_num !== 1 ? 'players' : 'player'}`;
                         li.classList.add('hub');
     
-                        li.onclick = await getEnterHubFunction(hub);
+                        li.onclick = getEnterHubFunction(hub);
             
                         fragment.appendChild(li);
                     });
