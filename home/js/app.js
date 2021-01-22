@@ -6,11 +6,37 @@ document.onreadystatechange = function() {
     if (document.readyState == 'complete') {
         async function saveToken(response) {
             const token = await response.json();
+
             try {
                 localStorage.setItem('game-token', token.token);
-
             } catch(err) {
                 alert(err);
+            }
+        }
+
+        async function getEnterHubFunction(hub) {
+            return async function(event) {
+                const body = {
+                    'username': document.getElementById('username').value,
+                    'hubname': hub.name
+                }
+
+                const resp = await fetch('/hubs/join', {
+                    'method': 'post',
+                    'credentials': 'include',
+                    'headers': new Headers({
+                        'Authorization': localStorage.getItem('game-token'), 
+                    }),
+                    'body': JSON.stringify(body),
+                });
+
+                if (resp.status === 200) {
+                    await saveToken(resp);
+                    window.location.href = '/play';
+                } else {
+                    document.getElementById('join-hub-err').innerText = await response.text();
+                }
+            
             }
         }
 
@@ -61,29 +87,7 @@ document.onreadystatechange = function() {
                         li.innerText = `${hub.name} : ${hub.player_num} ${hub.player_num !== 1 ? 'players' : 'player'}`;
                         li.classList.add('hub');
     
-                        
-                        li.onclick = async function(event) {
-                            const body = {
-                                'username': document.getElementById('username').value,
-                                'hubname': hub.name
-                            }
-    
-                            const resp = await fetch('/hubs/join', {
-                                'method': 'post',
-                                'credentials': 'include',
-                                'headers': new Headers({
-                                    'Authorization': localStorage.getItem('game-token'), 
-                                }),
-                                'body': JSON.stringify(body),
-                            });
-            
-                            if (resp.status === 200) {
-                                await saveToken(resp);
-                                window.location.href = '/play';
-                            } else {
-                                document.getElementById('join-hub-err').innerText = await response.text();
-                            }
-                        };
+                        li.onclick = await getEnterHubFunction(hub);
             
                         fragment.appendChild(li);
                     });
