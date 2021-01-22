@@ -1,7 +1,9 @@
 package multiplayer
 
 import (
+	"davidmultiplayersnake/api/config"
 	"davidmultiplayersnake/api/models"
+	"davidmultiplayersnake/api/security"
 	"davidmultiplayersnake/utils"
 	"math/rand"
 	"sync"
@@ -57,6 +59,10 @@ func (h *Hub) checkCollision(client *Client, msg *models.Message) {
 
 				client.Player.PlayerTotalLength = client.Player.PlayerLength * models.PlayerDiameter
 				msg.Player.PlayerTotalLength = msg.Player.PlayerLength * models.PlayerDiameter
+
+				str, _ := security.GetToken(client.Player.Name, h.Name, config.JWTSecret, client.Player.Score, int64(time.Duration(time.Minute*15)))
+
+				msg.NewToken = str
 			} else {
 				switch msg.Player.Direction {
 				case models.DirectionDown:
@@ -120,6 +126,8 @@ func (h *Hub) Run() {
 						client.close = true
 					}
 				}
+
+				msg.NewToken = ""
 			}
 		case c := <-h.Register:
 			rand.Seed(time.Now().Unix())

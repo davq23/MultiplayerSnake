@@ -1,9 +1,7 @@
 package multiplayer
 
 import (
-	"davidmultiplayersnake/api/config"
 	"davidmultiplayersnake/api/models"
-	"davidmultiplayersnake/api/security"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -108,7 +106,6 @@ func (c *Client) WritePump() {
 	}()
 
 	tickerPing := time.NewTicker(time.Duration(trackingTick) * time.Millisecond)
-	tickerRefresh := time.NewTicker(time.Duration(1) * time.Minute)
 
 	c.connection.SetPongHandler(func(string) error {
 		c.connection.SetWriteDeadline(time.Now().Add(time.Duration(time.Minute)))
@@ -143,30 +140,6 @@ func (c *Client) WritePump() {
 
 				if len(c.Send) < maxMessages {
 					c.hub.Tracking <- msg
-				}
-
-			}
-		case <-tickerRefresh.C:
-			if c.Player != nil {
-				var msg models.Message
-				msg.Type = models.MessageRefresh
-
-				newTokenChannel := make(chan string)
-
-				go func(ch chan<- string) {
-					str, err := security.GetToken(c.Player.Name, c.hub.Name, config.JWTSecret, c.Player.Score, int64(time.Duration(time.Minute*15)))
-
-					if err != nil {
-						str = ""
-					}
-
-					ch <- str
-				}(newTokenChannel)
-
-				msg.NewToken = <-newTokenChannel
-
-				if msg.NewToken != "" {
-					c.connection.WriteJSON(msg)
 				}
 
 			}

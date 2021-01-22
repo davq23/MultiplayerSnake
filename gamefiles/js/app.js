@@ -95,7 +95,7 @@ document.onreadystatechange = function (event) {
                                     player.positions[i] = msg.player_info.positions[i];                                    
                                 }
                             }
-                            player.setScore(msg.player_info.score);
+                            player.setScore(msg.player_info.score, msg.new_token);
                         }
 
                        
@@ -110,9 +110,6 @@ document.onreadystatechange = function (event) {
 
                         playerScores.render(players);
 
-                        break;
-                    case MessageRefresh:
-                        localStorage.setItem('game-token', msg.new_token);
                         break;
                     case MessageTracking:
 
