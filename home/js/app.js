@@ -6,8 +6,12 @@ document.onreadystatechange = function() {
     if (document.readyState == 'complete') {
         async function saveToken(response) {
             const token = await response.json();
-            localStorage.setItem('game-token', token.token);
-            alert(localStorage.getItem('game-token'));
+            try {
+                localStorage.setItem('game-token', token.token);
+
+            } catch(err) {
+                alert(err);
+            }
         }
 
         createHub.onclick = async function (event) {

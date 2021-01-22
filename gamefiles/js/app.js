@@ -141,6 +141,7 @@ document.onreadystatechange = function (event) {
 
             
         } catch (err) {
+            alert(err);
             console.log(err);
         }
 
