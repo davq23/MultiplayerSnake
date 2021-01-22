@@ -124,7 +124,7 @@ document.onreadystatechange = function (event) {
                         delete players[msg.player_info.player_id];
 
                         if (playerUser.id === msg.player_info.player_id) {
-                            playerControl.anchor.innerHTML = `<h3 style="color:red;">EATEN</h3>`; 
+                            playerControl.anchor.innerHTML = '<h3 style="color:red;">EATEN</h3>'; 
                         }
 
                         playerScores.render(players);
