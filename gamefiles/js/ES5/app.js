@@ -38,9 +38,11 @@ document.onreadystatechange = function (event) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                players.forEach(function (value, key, map) {
-                    value.render()
-                })
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        players[key].render();
+                    }
+                }
             }
 
             ws.onopen = function (event) {
