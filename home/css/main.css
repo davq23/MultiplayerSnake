@@ -43,7 +43,7 @@ body {
 
     color: rgba(255, 255, 255, 0.775);
 
-
+    cursor: pointer;
 } 
 
 .hub:active {
@@ -52,6 +52,9 @@ body {
 
 .snakebite {
     font-family: SnakeBite;
+    font-size: 2rem;
+    font-weight:light;
+    text-align:center;
 }
 .spinning {
     animation: spinning;
