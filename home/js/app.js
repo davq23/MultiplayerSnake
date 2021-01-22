@@ -40,17 +40,16 @@ document.onreadystatechange = function() {
         }
 
         async function getHubs(event) {
+            const message = document.createElement('h3');
+            message.innerText = 'Loading'
+            message.classList.add('spinning') 
+
+            hubList.appendChild(message);
+
             const response = await fetch('/hubs');
         
             if (response.status === 200) {
                 const fragment = document.createDocumentFragment();
-
-                const message = document.createElement('h3');
-                message.innerText = 'Loading'
-                message.classList.add('spinning') 
-
-                hubList.appendChild(message);
-
 
                 const hubs = await response.json();
         
