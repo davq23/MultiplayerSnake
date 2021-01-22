@@ -7,6 +7,7 @@ document.onreadystatechange = function() {
         async function saveToken(response) {
             const token = await response.json();
             localStorage.setItem('game-token', token.token);
+            alert(localStorage.getItem('game-token'));
         }
 
         createHub.onclick = async function (event) {
@@ -74,7 +75,7 @@ document.onreadystatechange = function() {
                             });
             
                             if (resp.status === 200) {
-                                await saveToken(resp);
+                                await saveToken(response);
                                 window.location.href = '/play';
                             } else {
                                 document.getElementById('join-hub-err').innerText = await response.text();

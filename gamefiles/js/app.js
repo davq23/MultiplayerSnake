@@ -54,7 +54,6 @@ document.onreadystatechange = function (event) {
 
             ws.onclose = function () {
                 alert('Connection closed');
-                alert(localStorage.getItem('game-token'));
                 window.location.href = '/';
             }
 
@@ -113,7 +112,7 @@ document.onreadystatechange = function (event) {
 
                         break;
                     case MessageRefresh:
-                        localStorage.setItem('game-token', msg.new_token)
+                        localStorage.setItem('game-token', msg.new_token);
                         break;
                     case MessageTracking:
 
