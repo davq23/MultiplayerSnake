@@ -102,34 +102,38 @@ func (uc *UserController) FetchHubs(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// JoinHub returns a cookie given a hubname and a username
+// JoinHub returns a cookie given a hub name and a player name
 func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 	var claims security.PlayerClaims
-
-	hubName, username, err := getHubName(w, r)
-
-	if err != nil {
-		uc.logger.LogChan <- err.Error()
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	if uc.checkInput(username) != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		w.Write([]byte("Player name can only have alphanumeric characters"))
-		return
-	}
+	hubName, playerName, err := getHubName(w, r)
 
 	tokenString, err := extractToken(r)
 
 	if err != nil {
-		tokenString, err = security.GetToken(username, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+		tokenString, err = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+
+		if err != nil {
+			uc.logger.LogChan <- err.Error()
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if uc.checkInput(playerName) != nil {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			w.Write([]byte("Player name can only have alphanumeric characters"))
+			return
+		}
 	} else {
 		token, err := security.VerifyToken(tokenString, config.JWTSecret)
 
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
+			tokenString, err = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
 		} else {
 			claims, err = security.DecipherClaims(token)
 
@@ -137,10 +141,14 @@ func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
-		}
 
-		if claims.HubName != hubName {
-			tokenString, err = security.GetToken(username, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+			if claims.HubName != hubName {
+				if uc.checkInput(playerName) != nil {
+					playerName = claims.PlayerName
+				}
+
+				tokenString, err = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+			}
 		}
 	}
 
