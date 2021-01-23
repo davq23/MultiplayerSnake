@@ -12,6 +12,7 @@ const PlayerClaimsType = 0
 // PlayerClaims are the claims to identify a player in a hub
 type PlayerClaims struct {
 	HubName     string `json:"hub_name"`
+	PlayerID    string `json:"player_id"`
 	PlayerName  string `json:"player_name"`
 	PlayerScore int    `json:"player_score"`
 	jwt.StandardClaims
@@ -26,6 +27,7 @@ func DecipherClaims(token *jwt.Token) (PlayerClaims, error) {
 	}
 
 	playerClaims := PlayerClaims{
+		PlayerID:    mapClaims["player_id"].(string),
 		HubName:     mapClaims["hub_name"].(string),
 		PlayerName:  mapClaims["player_name"].(string),
 		PlayerScore: int(mapClaims["player_score"].(float64)),

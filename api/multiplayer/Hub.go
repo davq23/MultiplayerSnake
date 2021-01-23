@@ -157,14 +157,16 @@ func (h *Hub) Run() {
 
 			message.Type = models.MessageRegister
 
-			id, err := uuid.NewRandom()
+			if c.Player.ID == "" {
+				id, err := uuid.NewRandom()
 
-			if err != nil {
-				h.lock.Unlock()
-				continue
+				if err != nil {
+					h.lock.Unlock()
+					return
+				}
+
+				c.Player.ID = id.String()
 			}
-
-			c.Player.ID = id.String()
 
 			var r, g, b = utils.GenerateRandomColors(rand.Float64(), 0.99, 0.99)
 			c.Player.Color = utils.RGB2Hex(r, g, b)

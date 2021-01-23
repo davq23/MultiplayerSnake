@@ -181,6 +181,7 @@ func (uc *UserController) StartGame(w http.ResponseWriter, r *http.Request) {
 	client := multiplayer.NewClient(connection, h, nil)
 
 	client.Player = models.NewPlayer(playerClaims.PlayerName, models.Position{X: rand.Intn(1999) + 1, Y: rand.Intn(999) + 1}, models.Direction(rand.Intn(4)+1))
+	client.Player.ID = playerClaims.PlayerID
 	client.Player.Score = playerClaims.PlayerScore
 
 	h.Register <- client
