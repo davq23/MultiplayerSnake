@@ -104,8 +104,10 @@ document.onreadystatechange = function() {
         }
 
         function getHubs(event) {
+            hubList.innerHTML = '';
+            
             var message = document.createElement('h3');
-            message.classList.add('circle') 
+            message.classList.add('circle');
 
             hubList.appendChild(message);
 
