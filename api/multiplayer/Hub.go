@@ -123,6 +123,8 @@ func (h *Hub) Run() {
 			msg.Player.Move()
 
 			for client := range h.clients {
+				msg.NewToken = ""
+
 				collides := h.checkCollision(client, &msg)
 
 				if len(client.Send) < maxMessages-2 || collides {
@@ -135,7 +137,6 @@ func (h *Hub) Run() {
 					}
 				}
 
-				msg.NewToken = ""
 			}
 		case c := <-h.Register:
 			rand.Seed(time.Now().Unix())
