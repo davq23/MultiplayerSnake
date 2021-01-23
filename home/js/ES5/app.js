@@ -105,8 +105,7 @@ document.onreadystatechange = function() {
 
         function getHubs(event) {
             var message = document.createElement('h3');
-            message.innerText = '<<'
-            message.classList.add('spinning') 
+            message.classList.add('circle') 
 
             hubList.appendChild(message);
 
@@ -131,8 +130,8 @@ document.onreadystatechange = function() {
                             fragment.appendChild(li);
                         });
                     } else {
+                        message.classList.remove('circle');
                         message.innerText = 'No hubs available';
-                        message.classList.remove('spinning');
                         fragment.appendChild(message)
                     }
                     
