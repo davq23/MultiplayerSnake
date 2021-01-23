@@ -60,19 +60,11 @@ function Player(canvas, id, name, x, y, color) {
         }
     }
 
-    this.setScore = function(score, token) {
+    this.setScore = function(score) {
         if (score && selfPlayer.score != score) {
             selfPlayer.score = score;
             const sc = document.getElementById(selfPlayer.id + '-score');
             
-            if (token) {
-                if (localStorage) {
-                    localStorage.setItem('game-token', token);
-                } else {
-                    document.cookie = "game-token=" + token+ "; path=/; secure; samesite=strict";
-                }
-            }
-
             if (sc) sc.innerText = selfPlayer.name + " : " + selfPlayer.score;
         }
     }

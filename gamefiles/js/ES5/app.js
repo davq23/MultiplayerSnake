@@ -1,4 +1,3 @@
-
 var canvas = document.getElementById('gameboard');
 var control = document.getElementById('gamecontrol');
 var scores = document.getElementById('gamescores');
@@ -72,13 +71,17 @@ document.onreadystatechange = function (event) {
                 var msg = JSON.parse(event.data);
 
                 switch (msg.type) {
-                    case MessageRegister:
-                        playerUser = new Player(canvas, msg.player_info.player_id, msg.player_info.name, msg.player_info.positions[0].x, msg.player_info.positions[0].y, msg.player_info.color);
-                        playerUser.setScore(msg.player_info.score); 
-                        players[msg.player_info.player_id] = playerUser;
+                    case MessageGetPlayers:
 
-                        var resp = new Message(MessageGetPlayers, playerUser)
-                        ws.send(JSON.stringify(resp))
+                        playerUser = msg.player_info
+
+                        for (var p in msg.players) {
+                            if (msg.players.hasOwnProperty(p)) {
+                                players[p] = new Player(canvas, p, msg.players[p].name, msg.players[p].positions[0].x, msg.players[p].positions[0].y, msg.players[p].color)
+                            }
+                        }
+
+                        playerScores.render(players);
 
                         break;
                     case MessageMove:
@@ -92,26 +95,31 @@ document.onreadystatechange = function (event) {
                                 player.positions = [];
 
                                 for (var i = 0; i < msg.player_info.positions.length; i++) {
-                                    player.positions.push(msg.player_info.positions[i]);                                    
+                                    player.positions.push(msg.player_info.positions[i]);
                                 }
                             }
 
                             player.setScore(msg.player_info.score, msg.new_token);
                         }
 
-                       
+
                         break;
-                    case MessageGetPlayers:
-
-                        playerUser = msg.player_info
-
-                        for (var p in msg.players) {
-                            if (msg.players.hasOwnProperty(p)) {
-                                players[p] = new Player(canvas, p, msg.players[p].name, msg.players[p].positions[0].x, msg.players[p].positions[0].y, msg.players[p].color)
+                    case MessageRefresh:
+                        if (msg.new_token) {
+                            if (localStorage) {
+                                localStorage.setItem('game-token', msg.new_token);
+                            } else {
+                                document.cookie = "game-token=" + msg.new_token + "; path=/; secure; samesite=strict";
                             }
                         }
-                        
-                        playerScores.render(players);
+                        break;
+                    case MessageRegister:
+                        playerUser = new Player(canvas, msg.player_info.player_id, msg.player_info.name, msg.player_info.positions[0].x, msg.player_info.positions[0].y, msg.player_info.color);
+                        playerUser.setScore(msg.player_info.score);
+                        players[msg.player_info.player_id] = playerUser;
+
+                        var resp = new Message(MessageGetPlayers, playerUser)
+                        ws.send(JSON.stringify(resp))
 
                         break;
                     case MessageTracking:
@@ -124,7 +132,7 @@ document.onreadystatechange = function (event) {
                         delete players[msg.player_info.player_id];
 
                         if (playerUser.id === msg.player_info.player_id) {
-                            playerControl.anchor.innerHTML = '<h3 style="color:red;">EATEN</h3>'; 
+                            playerControl.anchor.innerHTML = '<h3 style="color:red;">EATEN</h3>';
                         }
 
                         playerScores.render(players);

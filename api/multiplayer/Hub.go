@@ -41,6 +41,25 @@ func NewHub(manager *HubManager, logger *utils.Logger) *Hub {
 	}
 }
 
+func (h *Hub) sendRefreshMessage(client *Client) {
+	str, err := security.GetToken(client.Player.Name, h.Name, config.JWTSecret, client.Player.Score, int64(time.Duration(time.Minute*15)))
+
+	if err != nil {
+		h.logger.LogChan <- err.Error()
+		return
+	}
+
+	var messageRefresh models.Message
+	messageRefresh.NewToken = str
+	messageRefresh.SentAt = time.Now()
+
+	messageRefresh.Type = models.MessageRefresh
+
+	if !client.close {
+		client.Send <- messageRefresh
+	}
+}
+
 func (h *Hub) checkCollision(client *Client, msg *models.Message) bool {
 	var collides bool
 
@@ -61,14 +80,7 @@ func (h *Hub) checkCollision(client *Client, msg *models.Message) bool {
 				client.Player.PlayerTotalLength = client.Player.PlayerLength * models.PlayerDiameter
 				msg.Player.PlayerTotalLength = msg.Player.PlayerLength * models.PlayerDiameter
 
-				str, err := security.GetToken(client.Player.Name, h.Name, config.JWTSecret, client.Player.Score, int64(time.Duration(time.Minute*15)))
-
-				if err != nil {
-					h.logger.LogChan <- err.Error()
-				}
-
-				msg.NewToken = str
-
+				h.sendRefreshMessage(client)
 			} else {
 				switch msg.Player.Direction {
 				case models.DirectionDown:
@@ -123,13 +135,7 @@ func (h *Hub) Run() {
 			msg.Player.Move()
 
 			for client := range h.clients {
-				msg.NewToken = ""
-
 				collides := h.checkCollision(client, &msg)
-
-				if collides {
-					h.logger.LogChan <- msg
-				}
 
 				if len(client.Send) < maxMessages-2 || collides {
 					select {
