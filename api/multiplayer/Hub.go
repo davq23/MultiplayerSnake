@@ -127,6 +127,10 @@ func (h *Hub) Run() {
 
 				collides := h.checkCollision(client, &msg)
 
+				if collides {
+					h.logger.LogChan <- msg
+				}
+
 				if len(client.Send) < maxMessages-2 || collides {
 					select {
 					case client.Send <- msg:
