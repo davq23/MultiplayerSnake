@@ -64,7 +64,7 @@ func (h *Hub) checkCollision(client *Client, msg *models.Message) bool {
 				str, err := security.GetToken(client.Player.Name, h.Name, config.JWTSecret, client.Player.Score, int64(time.Duration(time.Minute*15)))
 
 				if err != nil {
-					h.manager.logger.LogChan <- err.Error()
+					h.logger.LogChan <- err.Error()
 				}
 
 				msg.NewToken = str
