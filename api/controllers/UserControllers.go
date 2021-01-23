@@ -104,6 +104,8 @@ func (uc *UserController) FetchHubs(w http.ResponseWriter, r *http.Request) {
 
 // JoinHub returns a cookie given a hubname and a username
 func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
+	var claims security.PlayerClaims
+
 	hubName, username, err := getHubName(w, r)
 
 	if err != nil {
@@ -125,11 +127,16 @@ func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 	} else {
 		token, err := security.VerifyToken(tokenString, config.JWTSecret)
 
-		claims, err := security.DecipherClaims(token)
-
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
+		} else {
+			claims, err = security.DecipherClaims(token)
+
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
 		}
 
 		if claims.HubName != hubName {

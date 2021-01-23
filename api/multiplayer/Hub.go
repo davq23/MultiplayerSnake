@@ -41,7 +41,8 @@ func NewHub(manager *HubManager, logger *utils.Logger) *Hub {
 	}
 }
 
-func (h *Hub) checkCollision(client *Client, msg *models.Message) {
+func (h *Hub) checkCollision(client *Client, msg *models.Message) bool {
+	var collides bool
 
 	if client.Player.ID != msg.Player.ID && !h.players[msg.Player.ID].close {
 		collides, pos := msg.Player.CheckCollision(client.Player)
@@ -63,6 +64,7 @@ func (h *Hub) checkCollision(client *Client, msg *models.Message) {
 				str, _ := security.GetToken(client.Player.Name, h.Name, config.JWTSecret, client.Player.Score, int64(time.Duration(time.Minute*15)))
 
 				msg.NewToken = str
+
 			} else {
 				switch msg.Player.Direction {
 				case models.DirectionDown:
@@ -76,10 +78,12 @@ func (h *Hub) checkCollision(client *Client, msg *models.Message) {
 				}
 
 				msg.Player.Move()
+
 			}
 		}
 	}
 
+	return collides
 }
 
 func (h *Hub) broadcast(msg models.Message) {
@@ -115,9 +119,9 @@ func (h *Hub) Run() {
 			msg.Player.Move()
 
 			for client := range h.clients {
-				h.checkCollision(client, &msg)
+				collides := h.checkCollision(client, &msg)
 
-				if len(client.Send) < maxMessages-1 {
+				if len(client.Send) < maxMessages-2 || collides {
 					select {
 					case client.Send <- msg:
 					default:
