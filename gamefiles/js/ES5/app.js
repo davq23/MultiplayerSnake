@@ -37,6 +37,7 @@ document.onreadystatechange = function (event) {
 
             continueButton.onclick = function (event) {
                 modal.style.display = "none";
+                window.location.href = '/';
             }
 
             var playerControl = new PlayerControl(control);
