@@ -31,7 +31,7 @@ document.onreadystatechange = function (event) {
             function showModal(modalTitle, modalContent) {
                 modal.style.display = "block";
                 document.getElementById('modal-title').innerText = modalTitle;
-                document.getElementById('modal-content').innerText = modalContent;
+                document.getElementById('modal-body').innerText = modalContent;
             }
 
             window.onclick = function (event) {
@@ -131,6 +131,7 @@ document.onreadystatechange = function (event) {
                         players[msg.player_info.player_id] = playerUser;
 
                         var resp = new Message(MessageGetPlayers, playerUser)
+
                         ws.send(JSON.stringify(resp))
 
                         break;
@@ -158,8 +159,7 @@ document.onreadystatechange = function (event) {
             playerControl.render();
 
         } catch (err) {
-            alert(err);
-            console.log(err);
+            showModal('Error', err);
         }
 
     }
