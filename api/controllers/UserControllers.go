@@ -57,7 +57,6 @@ func getHubName(w http.ResponseWriter, r *http.Request) (string, string, error) 
 
 	if err != nil {
 		return "", "", err
-		g
 	}
 
 	hubName, ok := hubForm["hubname"]
