@@ -152,15 +152,18 @@ document.onreadystatechange = function (event) {
                         break;
                 }
 
-                requestAnimationFrame(main);
+                //requestAnimationFrame(main);
             }
 
             playerControl.render();
+
+            setInterval(requestAnimationFrame(main), 80);
 
         } catch (err) {
             alert(err);
             console.log(err);
         }
+
 
     }
 }
