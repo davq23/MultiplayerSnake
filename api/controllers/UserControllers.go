@@ -56,15 +56,14 @@ func getHubName(w http.ResponseWriter, r *http.Request) (string, string, error) 
 	err := decoder.Decode(&hubForm)
 
 	if err != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
 		return "", "", err
+		g
 	}
 
 	hubName, ok := hubForm["hubname"]
 	username, ok2 := hubForm["username"]
 
 	if !ok || !ok2 {
-		w.WriteHeader(http.StatusUnprocessableEntity)
 		return "", "", errors.New("Hub name not found")
 	}
 
@@ -105,40 +104,42 @@ func (uc *UserController) FetchHubs(w http.ResponseWriter, r *http.Request) {
 // JoinHub returns a cookie given a hub name and a player name
 func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 	var claims security.PlayerClaims
-	hubName, playerName, err := getHubName(w, r)
+	var ok bool
+	hubName, playerName, errForm := getHubName(w, r)
 
-	tokenString, err := extractToken(r)
+	tokenString, errToken := extractToken(r)
 
-	if err != nil {
-		tokenString, err = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
-
-		if err != nil {
-			uc.logger.LogChan <- err.Error()
-			w.WriteHeader(http.StatusInternalServerError)
+	if errToken != nil {
+		ok = sendMessageIfError(errForm, w, http.StatusUnprocessableEntity, "Player name can only have alphanumeric characters")
+		if !ok {
 			return
 		}
 
-		if uc.checkInput(playerName) != nil {
-			w.WriteHeader(http.StatusUnprocessableEntity)
-			w.Write([]byte("Player name can only have alphanumeric characters"))
+		ok = sendMessageIfError(uc.checkInput(playerName), w, http.StatusUnprocessableEntity, "Player name can only have alphanumeric characters")
+		if !ok {
 			return
 		}
+
+		tokenString, errToken = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+		ok = sendMessageIfError(errToken, w, http.StatusInternalServerError, "")
+		if !ok {
+			return
+		}
+
 	} else {
-		token, err := security.VerifyToken(tokenString, config.JWTSecret)
+		token, errToken := security.VerifyToken(tokenString, config.JWTSecret)
 
-		if err != nil {
-			tokenString, err = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+		if errToken != nil {
+			tokenString, errToken = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
 
-			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
+			ok = sendMessageIfError(errToken, w, http.StatusInternalServerError, "")
+			if !ok {
 				return
 			}
-
 		} else {
-			claims, err = security.DecipherClaims(token)
-
-			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
+			claims, errToken = security.DecipherClaims(token)
+			ok = sendMessageIfError(errToken, w, http.StatusInternalServerError, "")
+			if !ok {
 				return
 			}
 
@@ -147,16 +148,19 @@ func (uc *UserController) JoinHub(w http.ResponseWriter, r *http.Request) {
 					playerName = claims.PlayerName
 				}
 
-				tokenString, err = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+				tokenString, errToken = security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
+				ok = sendMessageIfError(errToken, w, http.StatusInternalServerError, "")
+				if !ok {
+					return
+				}
 			}
 		}
 	}
 
-	err = json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
+	errJSON := json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
 
-	if err != nil {
-		uc.logger.LogChan <- err.Error()
-		w.WriteHeader(http.StatusInternalServerError)
+	ok = sendMessageIfError(errJSON, w, http.StatusInternalServerError, "")
+	if !ok {
 		return
 	}
 
@@ -180,9 +184,8 @@ func (uc *UserController) StartGame(w http.ResponseWriter, r *http.Request) {
 
 	connection, err := uc.upgrader.Upgrade(w, r, nil)
 
-	if err != nil {
-		uc.logger.LogChan <- err.Error()
-		w.WriteHeader(http.StatusForbidden)
+	ok = sendMessageIfError(err, w, http.StatusForbidden, "")
+	if !ok {
 		return
 	}
 
@@ -200,49 +203,41 @@ func (uc *UserController) StartGame(w http.ResponseWriter, r *http.Request) {
 
 // CreateHub is the controller to create a new Hub
 func (uc *UserController) CreateHub(w http.ResponseWriter, r *http.Request) {
-	hubName, username, err := getHubName(w, r)
+	hubName, playerName, err := getHubName(w, r)
 
 	if err != nil {
 		uc.logger.LogChan <- err.Error()
 		return
 	}
 
-	if uc.checkInput(hubName) != nil || uc.checkInput(hubName) != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		w.Write([]byte("Hub name and player name can only have alphanumeric characters"))
+	ok := sendMessageIfError(uc.checkInput(hubName), w, http.StatusUnprocessableEntity, "Hub name can only have alphanumeric characters")
+	if !ok {
+		return
+	}
+
+	ok = sendMessageIfError(uc.checkInput(playerName), w, http.StatusUnprocessableEntity, "Player name can only have alphanumeric characters")
+	if !ok {
 		return
 	}
 
 	err = uc.hubManager.RegisterHub(hubName)
 
-	if err != nil {
-		uc.logger.LogChan <- err.Error()
-
-		w.WriteHeader(http.StatusConflict)
+	ok = sendMessageIfError(err, w, http.StatusInternalServerError, "")
+	if !ok {
 		return
 	}
 
-	if err != nil {
-		uc.logger.LogChan <- err.Error()
+	tokenString, err := security.GetToken(playerName, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
 
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	tokenString, err := security.GetToken(username, hubName, config.JWTSecret, 0, int64(time.Duration(time.Minute*15)))
-
-	if err != nil {
-		uc.logger.LogChan <- err.Error()
-
-		w.WriteHeader(http.StatusInternalServerError)
+	ok = sendMessageIfError(err, w, http.StatusInternalServerError, "")
+	if !ok {
 		return
 	}
 
 	err = json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
 
-	if err != nil {
-		uc.logger.LogChan <- err.Error()
-		w.WriteHeader(http.StatusInternalServerError)
+	ok = sendMessageIfError(err, w, http.StatusInternalServerError, "")
+	if !ok {
 		return
 	}
 }
