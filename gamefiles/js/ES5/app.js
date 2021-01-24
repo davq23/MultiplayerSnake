@@ -140,10 +140,12 @@ document.onreadystatechange = function (event) {
                         break;
                 }
 
-                requestAnimationFrame(main);
+                //requestAnimationFrame(main);
             }
 
             playerControl.render();
+
+            setTimeout(requestAnimationFrame(main), 60);
 
         } catch (err) {
             alert(err);
