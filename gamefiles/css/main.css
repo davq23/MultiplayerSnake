@@ -86,6 +86,30 @@ button:active {
     grid-column: 3;
 }
 
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 0;
+    margin: 15% auto; 
+    border: 1px solid #888;
+    min-width: fit-content;
+    max-width: 90vw;
+    animation: dropdown;
+    animation-duration: 0.4s;
+}
+
 @media(max-width: 500px) {
     .app-body {
         display: flex;
@@ -100,4 +124,15 @@ button:active {
         max-height: 70vh;
     }
     
+}
+
+@keyframes dropdown {
+    from {
+        margin-top: 0%;
+        opacity: 0;
+    }
+    to {
+        margin-top: 15%;
+        opacity: 1;
+    }
 }

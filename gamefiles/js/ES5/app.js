@@ -1,7 +1,8 @@
 var canvas = document.getElementById('gameboard');
 var control = document.getElementById('gamecontrol');
-var scores = document.getElementById('gamescores');
+var modal = document.getElementById('cart');
 var players = {}
+var scores = document.getElementById('gamescores');
 
 document.onreadystatechange = function (event) {
     if (this.readyState === 'complete') {
@@ -26,6 +27,18 @@ document.onreadystatechange = function (event) {
             }
 
             ws = new WebSocket(webSocketRoute);
+
+            function showModal(modalTitle, modalContent) {
+                modal.style.display = "block";
+                document.getElementById('modal-title').innerText = modalTitle;
+                document.getElementById('modal-content').innerText = modalContent;
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
 
             var playerControl = new PlayerControl(control);
             var playerScores = new ScoreTable(scores);
@@ -52,8 +65,7 @@ document.onreadystatechange = function (event) {
             };
 
             ws.onclose = function () {
-                alert('Connection closed');
-                window.location.href = '/';
+                showModal('Connection closed', 'Please refresh the page to continue');
             }
 
             function moveEvent(direction) {
