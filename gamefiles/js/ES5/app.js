@@ -1,4 +1,5 @@
 var canvas = document.getElementById('gameboard');
+var continueButton = document.getElementById('modal-continue');
 var control = document.getElementById('gamecontrol');
 var modal = document.getElementById('modal');
 var players = {}
@@ -34,10 +35,8 @@ document.onreadystatechange = function (event) {
                 document.getElementById('modal-body').innerText = modalContent;
             }
 
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
+            continueButton.onclick = function (event) {
+                modal.style.display = "none";
             }
 
             var playerControl = new PlayerControl(control);
