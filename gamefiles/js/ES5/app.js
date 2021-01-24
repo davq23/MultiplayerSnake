@@ -1,6 +1,6 @@
 var canvas = document.getElementById('gameboard');
 var control = document.getElementById('gamecontrol');
-var modal = document.getElementById('cart');
+var modal = document.getElementById('modal');
 var players = {}
 var scores = document.getElementById('gamescores');
 
