@@ -1,4 +1,6 @@
 package config
 
+import "os"
+
 // JWTSecret is the secret used to verify the JWT token
-const JWTSecret = os.Getenv("jwtSecret")
+var JWTSecret = os.Getenv("jwtSecret")
