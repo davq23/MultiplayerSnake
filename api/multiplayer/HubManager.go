@@ -6,13 +6,14 @@ import (
 	"sync"
 )
 
-//HubManager manages the game hubs
+// HubManager manages the game hubs
 type HubManager struct {
-	hubs   map[string]*Hub
-	Start  chan *Hub
-	End    chan *Hub
-	logger *utils.Logger
-	lock   sync.Mutex
+	hubs    map[string]*Hub
+	Start   chan *Hub
+	End     chan *Hub
+	Running bool
+	logger  *utils.Logger
+	lock    sync.Mutex
 }
 
 // NewHubManager allocates and returns a *HubManager
@@ -62,7 +63,8 @@ func (hm *HubManager) GetHub(hubName string) *Hub {
 
 // Run concurrently starts hubs and
 func (hm *HubManager) Run() {
-	for {
+	hm.Running = true
+	for hm.Running {
 		select {
 		case h := <-hm.Start:
 			hm.logger.LogChan <- "Start " + h.Name

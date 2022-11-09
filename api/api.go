@@ -2,12 +2,16 @@ package api
 
 import (
 	"bufio"
+	"context"
 	"davidmultiplayersnake/api/controllers"
 	"davidmultiplayersnake/api/middlewares"
 	"davidmultiplayersnake/api/multiplayer"
 	"davidmultiplayersnake/utils"
+	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -48,5 +52,25 @@ func Run() {
 	// Let logs appear concurrently
 	go l.Logs()
 
-	s.ListenAndServe()
+	go s.ListenAndServe()
+
+	sigChan := make(chan os.Signal, 5)
+
+	signal.Notify(sigChan, os.Interrupt)
+	signal.Notify(sigChan, syscall.SIGTERM)
+
+	sig := <-sigChan
+
+	log.Println("Received terminate, graceful shutdown", sig)
+
+	tc, cancelFunc := context.WithTimeout(context.Background(), 30*time.Second)
+
+	defer cancelFunc()
+
+	defer func() {
+		// Stop
+		l.Running = false
+		hm.Running = false
+		s.Shutdown(tc)
+	}()
 }
