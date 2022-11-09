@@ -10,7 +10,6 @@ document.onreadystatechange = function (event) {
         try {
             var ws = null;
 
-            // Change in the future
             var webSocketRoute = 'wss://testapp-19995.nodechef.com/game?user_info=';
 
             if (localStorage) {
