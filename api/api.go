@@ -54,6 +54,7 @@ func Run() {
 
 	go s.ListenAndServe()
 
+	// Graceful termination
 	sigChan := make(chan os.Signal, 5)
 
 	signal.Notify(sigChan, os.Interrupt)
