@@ -10,7 +10,7 @@ document.onreadystatechange = function (event) {
         try {
             var ws = null;
 
-            var webSocketRoute = 'wss://testapp-19995.nodechef.com/game?user_info=';
+            var webSocketRoute = 'wss://multiplayer-snake-19995.nodechef.com/game?user_info=';
 
             if (localStorage) {
                 webSocketRoute += localStorage.getItem('game-token');
