@@ -8,6 +8,7 @@ import (
 // Logger manage concurrent logs
 type Logger struct {
 	LogChan chan interface{}
+	Running bool
 	logger  *log.Logger
 }
 
@@ -21,7 +22,8 @@ func NewLogger(writer io.Writer) *Logger {
 
 // Logs go function for logging
 func (l *Logger) Logs() {
-	for {
+	l.Running = true
+	for l.Running {
 		select {
 		case message := <-l.LogChan:
 			log.Printf("%v", message)
